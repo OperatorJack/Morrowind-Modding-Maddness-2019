@@ -25,6 +25,7 @@ if (framework == nil) then
     return
 end
 
+local combatEvent = require("TeamVoluptuousVelks.DeeperDagothUr.events.combat")
 
 -- Initilization Section --
 local function onInitialized()	
@@ -32,7 +33,7 @@ local function onInitialized()
         print("[Deeper Dagoth Ur: INFO] ESP not loaded")
         return
     end
-    
+
 	print("[Deeper Dagoth Ur: INFO] Initialized Deeper Dagoth Ur")
 end
 event.register("initialized", onInitialized)
