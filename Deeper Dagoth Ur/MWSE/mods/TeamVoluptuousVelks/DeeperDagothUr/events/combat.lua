@@ -59,17 +59,20 @@ local function onDeathOfAshVampire(e)
 
     -- ratio% chance of this occuring on death.
     if (common.shouldPerformRandomEvent(ratio)) then
-        local result = math.random(1, 3)
-
-        if (result == 1) then
-            common.debug("Ash Vampire Death: Result 1.")
-            tes3.messageBox("Option 1")
-        elseif (result == 2) then
-            common.debug("Ash Vampire Death: Result 2.")
-            tes3.messageBox("Option 2")
-        else 
-            common.debug("Ash Vampire Death: Result 3.")
-            tes3.messageBox("Option 3")
+        if (referenceId == "dagoth araynys") then
+            tes3.messageBox("")
+        else if (referenceId == "dagoth endus") then
+            tes3.messageBox("")
+        else if (referenceId == "dagoth gilvoth") then
+            tes3.messageBox("")
+        else if (referenceId == "dagoth odros") then
+            tes3.messageBox("")
+        else if (referenceId == "dagoth tureynul") then
+            tes3.messageBox("")
+        else if (referenceId == "dagoth uthol") then
+            tes3.messageBox("")
+        else if (referenceId == "dagoth vemyn") then
+            tes3.messageBox("")
         end
 
         return
