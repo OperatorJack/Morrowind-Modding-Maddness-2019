@@ -18,6 +18,33 @@ this.error = function (message)
     tes3.messageBox(message)
 end
 
+this.data = {
+    spellIds = {
+        ascendedSleeperSummonAshSlaves = "DDU_AscendedSlprSummonAshSlvs",
+        ascendedSleeperHeal = "hearth heal",
+        ashVampireSummonAscendedSleepers = "DDU_AshVmprSummonAscndSlprs"
+    },
+    diseaseIds = {
+        blackHeartBlight = {
+            id = "black-heart blight",
+            name = "Black-Heart Blight"
+        },
+        ashWoeBlight = {
+            id = "ash woe blight",
+            name = "Ash Woe Blight"
+        },
+        ashChancreBlight = {
+            id = "ash-chancre",
+            name = "Ash-chancre"
+        },
+        chanthraxBlight = {
+            id = "chanthrax blight",
+            name = "Chanthrax Blight"
+        }
+    }
+}
+
+
 this.shouldPerformRandomEvent = function (percentChanceOfOccurence)
     if (math.random(-1, 101) <= percentChanceOfOccurence) then
         return true

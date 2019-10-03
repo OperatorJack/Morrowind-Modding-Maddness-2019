@@ -1,88 +1,4 @@
 local common = require("TeamVoluptuousVelks.DeeperDagothUr.common")
-local magickaExpanded = include("OperatorJack.MagickaExpanded.magickaExpanded")
-
--- Forward declare spell ids.
-local spellIds = {
-    ascendedSleeperSummonAshSlaves = "DDU_AscendedSlprSummonAshSlvs",
-    ascendedSleeperHeal = "hearth heal",
-    ascendedSleeperBlackHeartBlight = "black-heart blight"
-}
-
--- Dagoth Ur Mechanics --
-local dagothUrId = "dagoth ur"
-
-local function onCombatStartWithDagothUr(e)
-    if (e.target.object.id ~= dagothUrId) then
-        return
-    end
-
-    tes3.messageBox("Starting combat with Dagoth Ur.")
-end
-
-event.register("combatStart", onCombatStartWithDagothUr)
-------------------------------------------
-
--- Ash Vampire Mechanics --
-local ashVampireIds = {
-    ["ash_vampire"] = true,
-    ["dagoth araynys"] = true,
-    ["dagoth endus"] = true,
-    ["dagoth gilvoth"] = true,
-    ["dagoth odros"] = true,
-    ["dagoth tureynul"] = true,
-    ["dagoth uthol"] = true,
-    ["dagoth vemyn"] = true
-}
-
-local function isAshVampire(id)
-    return ashVampireIds[id] == true
-end
-
-local function onDeathOfAshVampire(e)
-    local referenceId = e.mobile.object.baseObject.id
-    if (isAshVampire(referenceId) == false) then
-        return
-    end
-
-    local ashVampire = e.mobile
-
-    common.debug("Ash Vampire is dying.")
-
-    local actors = common.getActorsNearTargetPosition(ashVampire.cell, ashVampire.position, 1000)
-    local countOfActors = #actors
-    local ratio = -17 * countOfActors + 90
-    
-    if (ratio <= 0) then
-        common.debug("Ash Vampire Death: Ratio is 0.")
-        return
-    end
-
-    -- ratio% chance of this occuring on death.
-    if (common.shouldPerformRandomEvent(ratio)) then
-        if (referenceId == "dagoth araynys") then
-            tes3.messageBox("")
-        else if (referenceId == "dagoth endus") then
-            tes3.messageBox("")
-        else if (referenceId == "dagoth gilvoth") then
-            tes3.messageBox("")
-        else if (referenceId == "dagoth odros") then
-            tes3.messageBox("")
-        else if (referenceId == "dagoth tureynul") then
-            tes3.messageBox("")
-        else if (referenceId == "dagoth uthol") then
-            tes3.messageBox("")
-        else if (referenceId == "dagoth vemyn") then
-            tes3.messageBox("")
-        end
-
-        return
-    end
-
-    common.debug("Ash Vampire Death: Check failed.")
-end
-
-event.register("death", onDeathOfAshVampire)
-------------------------------------------
 
 -- Ascended Sleeper Mechanics --
 local ascendedSleeperId = "ascended_sleeper"
@@ -181,17 +97,29 @@ local function onCombatStartedWithAscendedSleeper(e)
                 common.forceCast({
                     reference = ascendedSleeper,
                     target = ascendedSleeper,
-                    spell = spellIds.ascendedSleeperHeal
+                    spell = common.data.spellIds.ascendedSleeperHeal
                 })            
 
                 local distainceLimit = 450
                 if (player.position:distance(ascendedSleeper.position) <= distainceLimit) then
+                    local rand = math.random(0, 4)
+                    local spellObject = {}
+                    if (rand == 1) then
+                        spellObject = common.data.diseaseIds.blackHeartBlight
+                    elseif (rand == 2) then
+                        spellObject = common.data.diseaseIds.ashWoeBlight
+                    elseif (rand == 3) then
+                        spellObject = common.data.diseaseIds.ashChancreBlight
+                    else
+                        spellObject = common.data.diseaseIds.chanthraxBlight
+                    end
+
                     mwscript.addSpell({
                         reference = player,
-                        spell = spellIds.ascendedSleeperBlackHeartBlight
+                        spell = spellObject.id
                     })
 
-                    tes3.messageBox("As the Ascended Sleeper heals, you are contaminated due to your close proximity. You have contracted Black-Heat Blight.")
+                    tes3.messageBox("As the Ascended Sleeper heals, you are contaminated due to your close proximity. You have contracted %s.", spellObject.name)
                 end
 
                 hasCastHealSpell = true
@@ -204,7 +132,7 @@ local function onCombatStartedWithAscendedSleeper(e)
                 common.forceCast({
                     reference = ascendedSleeper,
                     target = ascendedSleeper,
-                    spell = spellIds.ascendedSleeperSummonAshSlaves
+                    spell = common.data.spellIds.ascendedSleeperSummonAshSlaves
                 })
 
                 hasCastSummonAshSlaves = false
@@ -216,28 +144,4 @@ end
 
 event.register("death", onDeathOfAscendedSleeper)
 event.register("combatStarted", onCombatStartedWithAscendedSleeper)
-------------------------------------------
-
--- Register Spells --
-local function registerSpells()
-    magickaExpanded.spells.createComplexSpell({
-        id = spellIds.ascendedSleeperSummonAshSlaves,
-        name = "Summon Ash Slaves",
-        effects =
-          {
-            [1] = {
-              id =tes3.effect.summonAshSlave,
-              range = tes3.effectRange.self,
-              duration = 30
-            },
-            [2] = {
-              id =tes3.effect.summonAshSlave,
-              range = tes3.effectRange.self,
-              duration = 30
-            }
-          }
-      })
-  end
-  
-  event.register("MagickaExpanded:Register", registerSpells)
 ------------------------------------------

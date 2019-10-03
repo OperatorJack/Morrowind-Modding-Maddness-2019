@@ -38,9 +38,12 @@ local function onInitialized()
     math.random()
     math.random()
     math.random()
-    
+
     require("TeamVoluptuousVelks.DeeperDagothUr.common")
-    require("TeamVoluptuousVelks.DeeperDagothUr.events.combat")
+    require("TeamVoluptuousVelks.DeeperDagothUr.events.registerSpells")
+    require("TeamVoluptuousVelks.DeeperDagothUr.mechanics.ascendedSleeper")
+    require("TeamVoluptuousVelks.DeeperDagothUr.mechanics.ashVampire")
+    require("TeamVoluptuousVelks.DeeperDagothUr.mechanics.dagothUr")
 
 	print("[Deeper Dagoth Ur: INFO] Initialized Deeper Dagoth Ur")
 end
