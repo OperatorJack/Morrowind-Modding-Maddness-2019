@@ -25,6 +25,13 @@ event.register("combatStart", onCombatStartWithDagothUr)
 -- Ash Vampire Mechanics --
 local ashVampireIds = {
     ["ash_vampire"] = true,
+    ["dagoth araynys"] = true,
+    ["dagoth endus"] = true,
+    ["dagoth gilvoth"] = true,
+    ["dagoth odros"] = true,
+    ["dagoth tureynul"] = true,
+    ["dagoth uthol"] = true,
+    ["dagoth vemyn"] = true
 }
 
 local function isAshVampire(id)
@@ -37,10 +44,21 @@ local function onDeathOfAshVampire(e)
         return
     end
 
+    local ashVampire = e.mobile
+
     common.debug("Ash Vampire is dying.")
 
-    -- 10% chance of this occuring on death.
-    if (common.shouldPerformRandomEvent(10)) then
+    local actors = common.getActorsNearTargetPosition(ashVampire.cell, ashVampire.position, 1000)
+    local countOfActors = #actors
+    local ratio = -17 * countOfActors + 90
+    
+    if (ratio <= 0) then
+        common.debug("Ash Vampire Death: Ratio is 0.")
+        return
+    end
+
+    -- ratio% chance of this occuring on death.
+    if (common.shouldPerformRandomEvent(ratio)) then
         local result = math.random(1, 3)
 
         if (result == 1) then
