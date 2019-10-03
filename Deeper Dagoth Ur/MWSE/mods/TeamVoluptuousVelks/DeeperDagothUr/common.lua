@@ -31,7 +31,7 @@ this.getActorsNearTargetPosition = function(cell, targetPosition, distanceLimit)
     for ref in cell:iterateReferences() do
         -- Check that the reference is a creature or NPC.
         if (ref.object.objectType == tes3.objectType.npc or
-			ref.object.objectType == tes3.objectType.creature) then
+            ref.object.objectType == tes3.objectType.creature) then
             -- Check that the distance between the reference and the target point is within the distance limit. If so, save the reference.
             local distance = targetPosition:distance(ref.position)
             if (distance <= distanceLimit) then
@@ -40,6 +40,20 @@ this.getActorsNearTargetPosition = function(cell, targetPosition, distanceLimit)
         end
     end
     return actors
+end
+
+this.forceCast = function(params)
+    tes3.playAnimation({
+        reference = params.reference,
+        group = tes3.animationGroup.idle,
+        startFlag = 1
+    })
+
+    tes3.cast({
+        reference = params.reference,
+        target = params.target,
+        spell = params.spell
+    })
 end
 
 return this

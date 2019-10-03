@@ -35,7 +35,10 @@ local function onInitialized()
     end
 
     math.randomseed(os.time())
-
+    math.random()
+    math.random()
+    math.random()
+    
     require("TeamVoluptuousVelks.DeeperDagothUr.common")
     require("TeamVoluptuousVelks.DeeperDagothUr.events.combat")
 

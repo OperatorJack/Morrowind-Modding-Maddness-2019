@@ -1,4 +1,12 @@
 local common = require("TeamVoluptuousVelks.DeeperDagothUr.common")
+local magickaExpanded = include("OperatorJack.MagickaExpanded.magickaExpanded")
+
+-- Forward declare spell ids.
+local spellIds = {
+    ascendedSleeperSummonAshSlaves = "DDU_AscendedSlprSummonAshSlvs",
+    ascendedSleeperHeal = "hearth heal",
+    ascendedSleeperBlackHeartBlight = "black-heart blight"
+}
 
 -- Dagoth Ur Mechanics --
 local dagothUrId = "dagoth ur"
@@ -12,6 +20,47 @@ local function onCombatStartWithDagothUr(e)
 end
 
 event.register("combatStart", onCombatStartWithDagothUr)
+------------------------------------------
+
+-- Ash Vampire Mechanics --
+local ashVampireIds = {
+    ["ash_vampire"] = true,
+}
+
+local function isAshVampire(id)
+    return ashVampireIds[id] == true
+end
+
+local function onDeathOfAshVampire(e)
+    local referenceId = e.mobile.object.baseObject.id
+    if (isAshVampire(referenceId) == false) then
+        return
+    end
+
+    common.debug("Ash Vampire is dying.")
+
+    -- 10% chance of this occuring on death.
+    if (common.shouldPerformRandomEvent(10)) then
+        local result = math.random(1, 3)
+
+        if (result == 1) then
+            common.debug("Ash Vampire Death: Result 1.")
+            tes3.messageBox("Option 1")
+        elseif (result == 2) then
+            common.debug("Ash Vampire Death: Result 2.")
+            tes3.messageBox("Option 2")
+        else 
+            common.debug("Ash Vampire Death: Result 3.")
+            tes3.messageBox("Option 3")
+        end
+
+        return
+    end
+
+    common.debug("Ash Vampire Death: Check failed.")
+end
+
+event.register("death", onDeathOfAshVampire)
 ------------------------------------------
 
 -- Ascended Sleeper Mechanics --
@@ -29,7 +78,7 @@ local function onDeathOfAscendedSleeper(e)
 
     common.debug("Ascended Sleeper is dying.")
 
-    -- 5% chance of this occuring on death.
+    -- 10% chance of this occuring on death.
     if (common.shouldPerformRandomEvent(10)) then
         local result = math.random(1, 3)
 
@@ -53,8 +102,11 @@ local function onDeathOfAscendedSleeper(e)
     common.debug("Ascended Sleeper Death: Check failed.")
 end
 
+local onCombatStartedWithAscendedSleeperInitialized = {}
 local function onCombatStartedWithAscendedSleeper(e)
     local targetId = e.target.object.baseObject.id
+    local targetReferenceId = e.target.object.id
+
     if (isAscendedSleeper(targetId) == false) then
         return
     end
@@ -63,23 +115,34 @@ local function onCombatStartedWithAscendedSleeper(e)
         return
     end
 
+    if (onCombatStartedWithAscendedSleeperInitialized[targetReferenceId] == true) then  
+        return
+    end
+
     common.debug("Starting Combat with Ascended Sleeper.")
-    
+
+    -- Mark the reference as processed.
+    onCombatStartedWithAscendedSleeperInitialized[targetReferenceId] = true
+
     local ascendedSleeper = e.target
     local player = e.actor
 
     local hasCastHealSpell = false
-    local ascendedSleeperHealSpell = tes3.getObject("hearth heal")
-
     local hasCastSummonAshSlaves = false
-    local summonedAshSlaveId = "ash_slave"
-    local summonedAshSlaveSpell = tes3.getObject("dagoth's bosom")
 
-    timer.start({
-        duration = 10,
+    local combatTimer
+    combatTimer = timer.start({
+        duration = 5,
         callback = function ()
-            if (ascendedSleeper.health.current <= 1) then                
-                common.debug("Ascended Sleeper Combat: Ascended sleeper has died. Timer continuing.")
+            if (ascendedSleeper.health.current < 1) then                
+                common.debug("Ascended Sleeper Combat: Ascended sleeper has died. Timer Cancelled.")
+                combatTimer:cancel()
+                return
+            end
+
+            if (hasCastHealSpell and hasCastSummonAshSlaves) then             
+                common.debug("Ascended Sleeper Combat: Ascended sleeper has used all new mechanics. Timer Cancelled.")
+                combatTimer:cancel()
                 return
             end
 
@@ -88,30 +151,26 @@ local function onCombatStartedWithAscendedSleeper(e)
                 return
             end
 
+            common.debug("Ascended Sleeper Combat: Current health at " .. ascendedSleeper.health.current)
+
             if (hasCastHealSpell == false and ascendedSleeper.health.current <= 100) then
                 common.debug("Ascended Sleeper Combat: Casting Self Heal.")
 
                 -- Explodes spell, healing self and giving blight to nearby actors.
-                tes3.cast({
+                common.forceCast({
                     reference = ascendedSleeper,
                     target = ascendedSleeper,
-                    spell = ascendedSleeperHealSpell
+                    spell = spellIds.ascendedSleeperHeal
                 })            
 
                 local distainceLimit = 450
-                local actors = common.getActorsNearTargetPosition(ascendedSleeper.cell, ascendedSleeper.position, distainceLimit)
-                for _, actor in pairs(actors) do
+                if (player.position:distance(ascendedSleeper.position) <= distainceLimit) then
                     mwscript.addSpell({
-                        reference = actor,
-                        spell = "black-heart blight"
+                        reference = player,
+                        spell = spellIds.ascendedSleeperBlackHeartBlight
                     })
 
-                    common.debug("Ascended Sleeper Combat: Giving actor Blight disease.")
-
-                    if (actor == tes3.mobilePlayer) then
-                        common.debug("Ascended Sleeper Combat: Giving player Blight disease.")
-                        tes3.messageBox("As the Ascended Sleeper heals, you are contaminated due to your close proximity. You have contracted Black-Heat Blight.")
-                    end
+                    tes3.messageBox("As the Ascended Sleeper heals, you are contaminated due to your close proximity. You have contracted Black-Heat Blight.")
                 end
 
                 hasCastHealSpell = true
@@ -121,41 +180,13 @@ local function onCombatStartedWithAscendedSleeper(e)
                 common.debug("Ascended Sleeper Combat: Summoning Ash Slaves.")
 
                 -- Explodes spell, for visual effect.
-                tes3.cast({
+                common.forceCast({
                     reference = ascendedSleeper,
-                    target = player,
-                    spell = summonedAshSlaveSpell
-                })   
-
-                local summonPosition = ascendedSleeper.position:copy()
-                local summonOrientation = ascendedSleeper.reference.orientation:copy()
-                local summonCell = ascendedSleeper.cell
-
-                local slave1 = tes3.createReference({
-                    object = summonedAshSlaveId,
-                    position = summonPosition,
-                    orientation = summonOrientation,
-                    cell = summonCell
+                    target = ascendedSleeper,
+                    spell = spellIds.ascendedSleeperSummonAshSlaves
                 })
 
-                mwscript.startCombat({
-                    reference = slave1,
-                    target = player
-                })
-
-                local slave2 = tes3.createReference({
-                    object = summonedAshSlaveId,
-                    position = summonPosition,
-                    orientation = summonOrientation,
-                    cell = summonCell
-                })
-
-                mwscript.startCombat({
-                    reference = slave2,
-                    target = player
-                })
-
-                hasCastSummonAshSlaves = true
+                hasCastSummonAshSlaves = false
             end
         end,
         iterations = 24
@@ -164,4 +195,28 @@ end
 
 event.register("death", onDeathOfAscendedSleeper)
 event.register("combatStarted", onCombatStartedWithAscendedSleeper)
+------------------------------------------
+
+-- Register Spells --
+local function registerSpells()
+    magickaExpanded.spells.createComplexSpell({
+        id = spellIds.ascendedSleeperSummonAshSlaves,
+        name = "Summon Ash Slaves",
+        effects =
+          {
+            [1] = {
+              id =tes3.effect.summonAshSlave,
+              range = tes3.effectRange.self,
+              duration = 30
+            },
+            [2] = {
+              id =tes3.effect.summonAshSlave,
+              range = tes3.effectRange.self,
+              duration = 30
+            }
+          }
+      })
+  end
+  
+  event.register("MagickaExpanded:Register", registerSpells)
 ------------------------------------------
