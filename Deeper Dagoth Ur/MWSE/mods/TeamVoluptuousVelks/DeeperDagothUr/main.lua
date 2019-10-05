@@ -27,6 +27,11 @@ if (framework == nil) then
 end
 ----------------------------
 
+-- Pre-Init Requires --
+require("TeamVoluptuousVelks.DeeperDagothUr.events.magicEffectsResolved")
+require("TeamVoluptuousVelks.DeeperDagothUr.events.registerSpells")
+----------------------------
+
 -- Initilization Section --
 local function onInitialized()
     if not tes3.isModActive("Deeper Dagoth Ur.ESP") then
@@ -40,7 +45,6 @@ local function onInitialized()
     math.random()
 
     require("TeamVoluptuousVelks.DeeperDagothUr.common")
-    require("TeamVoluptuousVelks.DeeperDagothUr.events.registerSpells")
     require("TeamVoluptuousVelks.DeeperDagothUr.mechanics.ascendedSleeper")
     require("TeamVoluptuousVelks.DeeperDagothUr.mechanics.ashVampire")
     require("TeamVoluptuousVelks.DeeperDagothUr.mechanics.dagothUr")

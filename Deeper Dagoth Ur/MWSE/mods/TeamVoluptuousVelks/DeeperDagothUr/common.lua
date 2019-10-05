@@ -20,6 +20,8 @@ end
 
 this.data = {
     spellIds = {
+        dispelLevitation = "DDU_DispelLevitation",
+        dispelLevitationSelf = "DDU_DispelLevitationSelf",
         ascendedSleeperSummonAshSlaves = "DDU_AscendedSlprSummonAshSlvs",
         ascendedSleeperHeal = "hearth heal",
         ashVampireSummonAscendedSleepers = "DDU_AshVmprSummonAscndSlprs"

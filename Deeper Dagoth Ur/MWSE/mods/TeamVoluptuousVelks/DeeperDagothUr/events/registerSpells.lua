@@ -3,6 +3,19 @@ local magickaExpanded = include("OperatorJack.MagickaExpanded.magickaExpanded")
 
 -- Register Spells --
 local function registerSpells()
+    magickaExpanded.spells.createBasicSpell({
+      id = common.data.spellIds.dispelLevitation,
+      name = "Dispel Levitation",
+      effect = tes3.effect.dispelLevitate,
+      range = tes3.effectRange.target
+    })
+    magickaExpanded.spells.createBasicSpell({
+      id = common.data.spellIds.dispelLevitationSelf,
+      name = "Dispel Levitation - Self",
+      effect = tes3.effect.dispelLevitate,
+      range = tes3.effectRange.self
+    })
+
     magickaExpanded.spells.createComplexSpell({
         id = common.data.spellIds.ascendedSleeperSummonAshSlaves,
         name = "Summon Ash Slaves",
