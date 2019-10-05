@@ -39,7 +39,8 @@ local function addDispelLevitateEffect()
         nonRecastable = false,
 
 		-- Graphics/sounds.
-		lighting = { 0, 0, 0 },
+        lighting = { 0, 0, 0 },
+        boltVFX = "DDU_VFX_javelinBolt",
 
 		-- Required callbacks.
 		onTick = onDispelLevitateTick,
