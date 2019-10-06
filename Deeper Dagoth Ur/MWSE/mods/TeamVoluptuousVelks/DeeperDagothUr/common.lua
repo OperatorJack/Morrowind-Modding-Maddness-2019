@@ -22,6 +22,7 @@ this.data = {
     spellIds = {
         dispelLevitation = "DDU_DispelLevitation",
         dispelLevitationSelf = "DDU_DispelLevitationSelf",
+        dispelLevitationBallista = "DDU_DispelLevitationBallista",
         ascendedSleeperSummonAshSlaves = "DDU_AscendedSlprSummonAshSlvs",
         ascendedSleeperHeal = "hearth heal",
         ashVampireSummonAscendedSleepers = "DDU_AshVmprSummonAscndSlprs"

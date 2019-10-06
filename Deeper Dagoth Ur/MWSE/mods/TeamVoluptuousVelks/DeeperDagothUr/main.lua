@@ -48,6 +48,7 @@ local function onInitialized()
     require("TeamVoluptuousVelks.DeeperDagothUr.mechanics.ascendedSleeper")
     require("TeamVoluptuousVelks.DeeperDagothUr.mechanics.ashVampire")
     require("TeamVoluptuousVelks.DeeperDagothUr.mechanics.dagothUr")
+    require("TeamVoluptuousVelks.DeeperDagothUr.mechanics.ballista")
     require("TeamVoluptuousVelks.DeeperDagothUr.puzzles.dagothUrLowerFacility")
 
 	print("[Deeper Dagoth Ur: INFO] Initialized Deeper Dagoth Ur")
