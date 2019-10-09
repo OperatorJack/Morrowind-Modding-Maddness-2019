@@ -34,18 +34,20 @@ local function onDispelLevitateJavelinTick(e)
 	})
 
 	if (isLevitationActive == true) then
-		local equippedItems = getEquipmentWithEnchantmentEffect(tes3.effect.levitate)
-		for _, equippedItem in pairs(equippedItems) do
-			if (equippedItem.object.enchantment.castType == tes3.enchantmentType.constant) then
-				if (common.shouldPerformRandomEvent(40) == true ) then
-					equippedItem.object.enchantment = nil
-					tes3.messageBox("As the projectile strikes you, your levitation enchantment gives out.")
+		local equippedItems = nil -- getEquipmentWithEnchantmentEffect(tes3.effect.levitate)
+		if (equippedItems ~= nil) then
+			for _, equippedItem in pairs(equippedItems) do
+				if (equippedItem.object.enchantment.castType == tes3.enchantmentType.constant) then
+					if (common.shouldPerformRandomEvent(40) == true ) then
+						equippedItem.object.enchantment = nil
+						tes3.messageBox("As the projectile strikes you, your levitation enchantment gives out.")
+					else
+						tes3.messageBox("As the projectile strikes you, your levitation enchantment falters.")
+					end
 				else
-					tes3.messageBox("As the projectile strikes you, your levitation enchantment falters.")
+					equippedItem.object.variables.charge = 0
+					tes3.messageBox("As the projectile strikes you, your levitation enchantment is drained.")
 				end
-			else
-				equippedItem.object.variables.charge = 0
-				tes3.messageBox("As the projectile strikes you, your levitation enchantment is drained.")
 			end
 		end
 
@@ -62,13 +64,12 @@ end
 local function addDispelLevitateJavelinEffect()
 	framework.effects.mysticism.createBasicEffect({
 		-- Base information.
-		id = tes3.effect.dispelLevitate,
+		id = tes3.effect.dispelLevitateJavelin,
 		name = "Dispel Levitate - Javelin",
 		description = "Removes any active levitation effects from the target.",
 
 		-- Basic dials.
 		baseCost = 3.0,
-		speed = 5.0,
 
 		-- Various flags.
 		allowEnchanting = false,
