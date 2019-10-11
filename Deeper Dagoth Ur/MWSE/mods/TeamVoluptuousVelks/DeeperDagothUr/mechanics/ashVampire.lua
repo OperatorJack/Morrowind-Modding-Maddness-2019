@@ -45,19 +45,19 @@ local function onDeathOfAshVampire(e)
     -- ratio% chance of this occuring on death.
     if (common.shouldPerformRandomEvent(ratio) == true) then
         if (referenceId == "dagoth araynys") then
-            tes3.messageBox("araynys")
+            tes3.messageBox(common.data.dialogue.ashVampires.araynys)
         elseif (referenceId == "dagoth endus") then
-            tes3.messageBox("endus")
+            tes3.messageBox(common.data.dialogue.ashVampires.endus)
         elseif (referenceId == "dagoth gilvoth") then
-            tes3.messageBox("gilvoth")
+            tes3.messageBox(common.data.dialogue.ashVampires.gilvoth)
         elseif (referenceId == "dagoth odros") then
-            tes3.messageBox("odros")
+            tes3.messageBox(common.data.dialogue.ashVampires.odros)
         elseif (referenceId == "dagoth tureynul") then
-            tes3.messageBox("tureynul")
+            tes3.messageBox(common.data.dialogue.ashVampires.tureynul)
         elseif (referenceId == "dagoth uthol") then
-            tes3.messageBox("uthol")
+            tes3.messageBox(common.data.dialogue.ashVampires.uthol)
         elseif (referenceId == "dagoth vemyn") then
-            tes3.messageBox("vemyn")
+            tes3.messageBox(common.data.dialogue.ashVampires.vemyn)
         end
 
         return

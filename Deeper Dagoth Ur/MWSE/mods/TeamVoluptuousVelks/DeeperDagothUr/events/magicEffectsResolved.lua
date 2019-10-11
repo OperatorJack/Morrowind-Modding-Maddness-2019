@@ -34,7 +34,7 @@ local function onDispelLevitateJavelinTick(e)
 	})
 
 	if (isLevitationActive == true) then
-		local equippedItems = nil -- getEquipmentWithEnchantmentEffect(tes3.effect.levitate)
+		local equippedItems = getEquipmentWithEnchantmentEffect(tes3.effect.levitate)
 		if (equippedItems ~= nil) then
 			for _, equippedItem in pairs(equippedItems) do
 				if (equippedItem.object.enchantment.castType == tes3.enchantmentType.constant) then

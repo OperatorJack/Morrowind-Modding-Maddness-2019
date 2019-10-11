@@ -21,16 +21,13 @@ local function onDeathOfAscendedSleeper(e)
 
         if (result == 1) then
             common.debug("Ascended Sleeper Death: Result 1.")
-            tes3.messageBox("As the Ascended Sleeper dies, you hear a whisper: 'What are you doing? You have no idea." .. 
-            " Poor animal. You struggle and fight, and understand nothing.'")
+            tes3.messageBox(common.data.dialogue.ascendedSleeper[1])
         elseif (result == 2) then
             common.debug("Ascended Sleeper Death: Result 2.")
-            tes3.messageBox("With it's last breath, the Ascended Sleeper gasps: 'A bug. A weed. A piece of dust. Busy, " ..
-             "busy, busy.'")
+            tes3.messageBox(common.data.dialogue.ascendedSleeper[2])
         else 
             common.debug("Ascended Sleeper Death: Result 3.")
-            tes3.messageBox("A calmness radiates from the Ascended Sleeper, and it says 'You think what you do has meaning? " .. 
-            " You think you slay me, and I am dead? It is just dream and waking over and over, one appearance after another, nothing real. What you do here means nothing. Why do we waste our breath on you?'")
+            tes3.messageBox(common.data.dialogue.ascendedSleeper[3])
         end
 
         return

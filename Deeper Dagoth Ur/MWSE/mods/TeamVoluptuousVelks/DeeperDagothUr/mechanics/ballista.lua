@@ -40,12 +40,12 @@ local function isWithinFireZone(reference, target)
     return false
 end
 
-local function isBallistaDelayed(key, timestamp)
+local function isBallistaDelayed(ballista, timestamp)
     common.debug("Ballista: Checking ballista timer.")
     
-    if (ballistaTimers[key] == nil) then
+    if (ballistaTimers[ballista] == nil) then
         return false
-    elseif (ballistaTimers[key] - timestamp <= 10) then
+    elseif (timestamp - ballistaTimers[ballista] <= .10) then
         return true
     end
     return false
@@ -78,12 +78,12 @@ local function onSimulate(e)
 
     for _, ballista in pairs(ballistae) do 
         common.debug("Ballista: Iterating ballista.")
-        if (isBallistaDelayed(ballista.id, e.timeStamp) == false) then
+        if (isBallistaDelayed(ballista, e.timestamp) == false) then
             -- Check if ballista is within distance parameters
             if(isWithinFireZone(ballista, tes3.player)) then
                 common.debug("Ballista: Firing ballista.")
                 
-                local spell = tes3.getObject(common.data.spellIds.dispelLevitation)
+                local spell = tes3.getObject(common.data.spellIds.dispelLevitationJavelin)
 
                 if (spell == nil) then
                     common.debug("Ballista: Spell not found.") 
@@ -94,7 +94,7 @@ local function onSimulate(e)
                         spell = spell
                     })
 
-                    ballistaTimers[ballista.id] = e.timeStamp
+                    ballistaTimers[ballista] = e.timestamp
                 end
 
             end

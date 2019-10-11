@@ -10,7 +10,7 @@ local function registerSpells()
       range = tes3.effectRange.target
     })
     magickaExpanded.spells.createBasicSpell({
-      id = common.data.spellIds.dispelLevitateJavelin,
+      id = common.data.spellIds.dispelLevitationJavelin,
       name = "Dispel Levitation - Javelin",
       effect = tes3.effect.dispelLevitateJavelin,
       range = tes3.effectRange.target

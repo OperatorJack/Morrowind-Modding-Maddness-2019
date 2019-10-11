@@ -19,10 +19,30 @@ this.error = function (message)
 end
 
 this.data = {
+    dialogue = {
+        ascendedSleeper = {
+            [1] = "As the Ascended Sleeper dies, you hear a whisper: 'What are you doing? You have no idea." .. 
+            " Poor animal. You struggle and fight, and understand nothing.'",
+            [2] = "With it's last breath, the Ascended Sleeper gasps: 'A bug. A weed. A piece of dust. Busy, " ..
+            "busy, busy.'",
+            [3] = "A calmness radiates from the Ascended Sleeper, and it says 'You think what you do has meaning? " .. 
+                " You think you slay me, and I am dead? It is just dream and waking over and over, one appearance after another, " .. 
+                "nothing real. What you do here means nothing. Why do we waste our breath on you?'"
+        },
+        ashVampires = {
+            araynys = "'A fair fight it was.'",
+            endus = "'One drop more, before I go.'",
+            gilvoth = "'I never thought I would fall to you.'",
+            odros = "'Remember, why risk blood and life for that which might be won by words and service?'",
+            tureynul = "As Dagoth Tureynul falls, his face remains a visage of silence.",
+            uthol = "'Lord Dagoth was right. You cannot leave a thing well enough alone.'",
+            vemyn = "'All of this time, and I am brought low by you. At least it was not from talking.'"
+        }
+    },
     spellIds = {
         dispelLevitation = "DDU_DispelLevitation",
         dispelLevitationSelf = "DDU_DispelLevitationSelf",
-        dispelLevitateJavelin = "DDU_DispelLevitationJavelin",
+        dispelLevitationJavelin = "DDU_DispelLevitationJavelin",
         ascendedSleeperSummonAshSlaves = "DDU_AscendedSlprSummonAshSlvs",
         ascendedSleeperHeal = "hearth heal",
         ashVampireSummonAscendedSleepers = "DDU_AshVmprSummonAscndSlprs"
