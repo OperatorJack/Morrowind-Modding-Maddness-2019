@@ -5,6 +5,11 @@ local coilId = "DU__TEST_Coil"
 local cellIds = {
     ["OJ_TEST"] = true,
     ["Dagoth Ur"] = true,
+    ["Dagoth Ur, Facility Cavern"] = true,
+    ["Dagoth Ur, Inner Facility"] = true,
+    ["Dagoth Ur, Inner Tower"] = true,
+    ["Dagoth Ur, Lower Facility"] = true,
+    ["Dagoth Ur, Outer Facility"] = true,
     ["Red Mountain Region"] = true
 }
 
@@ -16,7 +21,7 @@ local function isNearCoil(actor)
             if (ref.object.objectType == tes3.objectType.activator) then
                 -- Check that the object is a ballista
                 if (ref.object.id == coilId) then
-                    if (ref.position:distance(actor.position)) then
+                    if (ref.position:distance(actor.position) <= 1000) then
                         return true
                     end
                 end
@@ -26,9 +31,11 @@ local function isNearCoil(actor)
     return false
 end
 
-local function onSpellTick(e)
+local function onSpellCast(e)
+    common.debug("Coil: Checking for nearby coils.")
     if (isNearCoil(e.caster) == true) then
-        e.blocked = true
+        common.debug("Coil: blocking spell.")
+        e.castChance = 0
         return false
     end
 end
@@ -36,12 +43,12 @@ end
 local function onCellChanged(e)
     if (e.previousCell ~= nil) then
         if (cellIds[e.previousCell.id] == true) then
-            event.unregister("spellTick", onSpellTick)
+            event.unregister("spellCast", onSpellCast)
         end
     end
     
     if (cellIds[e.cell.id] == true) then
-        event.register("spellTick", onSpellTick)
+        event.register("spellCast", onSpellCast)
     end
 end
 
@@ -52,7 +59,7 @@ local function onJournal(e)
 
     event.unregister("cellChanged", onCellChanged)
     event.unregister("journal", onJournal)
-    event.unregister("spellTick", onSpellTick)
+    event.unregister("spellCast", onSpellCast)
 end
 
 local function onLoaded(e)

@@ -64,6 +64,57 @@ this.data = {
             id = "chanthrax blight",
             name = "Chanthrax Blight"
         }
+    },
+    mechanics = {
+        dagothUr = {
+            ids = {
+                creatures = {
+                    ascendedSleeper = "ascended_sleeper",
+                    ashSlave = "ash_slave"
+                },
+                dagothUrs = {
+                    dagoth_ur_1 = "dagoth_ur_1",
+                    dagoth_ur_2 = "dagoth_ur_2"
+                }
+            },
+            heartwights = {
+                araynys = {
+                    id = "",
+                    position = {},
+                    orientation = {}
+                },
+                endus = {
+                    id = "",
+                    position = {},
+                    orientation = {}
+                },
+                gilvoth = {
+                    id = "",
+                    position = {},
+                    orientation = {}
+                },
+                odros = {
+                    id = "",
+                    position = {},
+                    orientation = {}
+                },
+                tureynul = {
+                    id = "",
+                    position = {},
+                    orientation = {}
+                },
+                uthol = {
+                    id = "",
+                    position = {},
+                    orientation = {}
+                },
+                vemyn = {
+                    id = "",
+                    position = {},
+                    orientation = {}
+                } 
+            }
+        }
     }
 }
 

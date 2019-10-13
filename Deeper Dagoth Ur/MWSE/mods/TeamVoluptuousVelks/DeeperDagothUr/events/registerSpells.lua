@@ -21,6 +21,24 @@ local function registerSpells()
       effect = tes3.effect.dispelLevitate,
       range = tes3.effectRange.self
     })
+    magickaExpanded.spells.createComplexSpell({
+        id = common.data.spellIds.dispelLevitationJavelin,
+        name = "Dispel Levitation - Javelin",
+        effects =
+          {
+            [1] = {
+              id =tes3.effect.dispelLevitateJavelin,
+              range = tes3.effectRange.target,
+            },
+            [2] = {
+              id =tes3.effect.damageHealth,
+              range = tes3.effectRange.target,
+              duration = 2,
+              min = 10,
+              max = 50
+            }
+          }
+      })
 
     magickaExpanded.spells.createComplexSpell({
         id = common.data.spellIds.ascendedSleeperSummonAshSlaves,

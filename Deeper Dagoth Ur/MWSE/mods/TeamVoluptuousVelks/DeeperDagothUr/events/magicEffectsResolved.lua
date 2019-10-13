@@ -8,9 +8,13 @@ tes3.claimSpellEffectId("dispelLevitateJavelin", 401)
 local function getEquipmentWithEnchantmentEffect(effectId)
 	local equippedItems = {}
 	for _, stack in pairs(tes3.player.object.equipment) do
+		mwse.log(stack.object)
+		mwse.log(stack.object.enchantment)
 		if (stack.object.enchantment ~= nil) then
-			for _, effect in pairs(stack.object.enchantment) do
+			common.debug("Dispel Levitation: Found an enchanted item.")
+			for _, effect in pairs(stack.object.enchantment.effects) do
 				if (effect.id == effectId) then
+					common.debug("Dispel Levitation: Found an enchanted item of effect ID.")
 					table.insert(equippedItems, stack)
 				end
 			end
@@ -36,8 +40,10 @@ local function onDispelLevitateJavelinTick(e)
 	if (isLevitationActive == true) then
 		local equippedItems = getEquipmentWithEnchantmentEffect(tes3.effect.levitate)
 		if (equippedItems ~= nil) then
+			common.debug("Dispel Levitation: Iterating enchanted items.")
 			for _, equippedItem in pairs(equippedItems) do
 				if (equippedItem.object.enchantment.castType == tes3.enchantmentType.constant) then
+					common.debug("Dispel Levitation: Constant Effect.")
 					if (common.shouldPerformRandomEvent(40) == true ) then
 						equippedItem.object.enchantment = nil
 						tes3.messageBox("As the projectile strikes you, your levitation enchantment gives out.")
@@ -45,7 +51,8 @@ local function onDispelLevitateJavelinTick(e)
 						tes3.messageBox("As the projectile strikes you, your levitation enchantment falters.")
 					end
 				else
-					equippedItem.object.variables.charge = 0
+					common.debug("Dispel Levitation: Non Constant Effect.")
+					equippedItem.variables.charge = 0
 					tes3.messageBox("As the projectile strikes you, your levitation enchantment is drained.")
 				end
 			end

@@ -87,7 +87,7 @@ local function onSimulate(e)
 
                 if (spell == nil) then
                     common.debug("Ballista: Spell not found.") 
-                else            
+                else   
                     tes3.cast({
                         reference = ballista,
                         target = mobilePlayer,
