@@ -79,37 +79,37 @@ this.data = {
             },
             heartwights = {
                 araynys = {
-                    id = "",
+                    id = "dagoth araynys",
                     position = {},
                     orientation = {}
                 },
                 endus = {
-                    id = "",
+                    id = "dagoth endus",
                     position = {},
                     orientation = {}
                 },
                 gilvoth = {
-                    id = "",
+                    id = "dagoth gilvoth",
                     position = {},
                     orientation = {}
                 },
                 odros = {
-                    id = "",
+                    id = "dagoth odros",
                     position = {},
                     orientation = {}
                 },
                 tureynul = {
-                    id = "",
+                    id = "dagoth tureynul",
                     position = {},
                     orientation = {}
                 },
                 uthol = {
-                    id = "",
+                    id = "dagoth uthol",
                     position = {},
                     orientation = {}
                 },
                 vemyn = {
-                    id = "",
+                    id = "dagoth vemyn",
                     position = {},
                     orientation = {}
                 } 

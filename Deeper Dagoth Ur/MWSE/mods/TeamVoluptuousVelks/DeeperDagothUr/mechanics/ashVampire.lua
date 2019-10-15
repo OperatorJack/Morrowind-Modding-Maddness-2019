@@ -13,7 +13,7 @@ local ashVampireIds = {
 }
 
 local function isAshVampire(id)
-    return ashVampireIds[id] == true or (id:lower():startswith("dagoth") == true and isDagothUr(id) == false)
+    return ashVampireIds[id] == true or (id:lower():startswith("dagoth") == true and id ~= "dagoth_ur_1" and id ~= "dagoth_ur_2")
 end
 
 local function onDeathOfAshVampire(e)

@@ -3,14 +3,14 @@ local common = require("TeamVoluptuousVelks.DeeperDagothUr.common")
 
 -- Dagoth Ur Mechanics --
 local journalId = "C3_DestroyDagoth"
-local cellId = "Dagoth Ur, Facility Cavern"
-local barrierId = "stageOneBarrier"
-local heartId = ""
+local cellId = "Akulakhan's Chamber"
+local barrierId = "DU_stageOneBarrier"
+local heartId = "heart_akulakhan"
 
-local dagothUrSpellCasted = false
 local stagesDagothUr = {}
 local barrier = nil
 local heart = nil
+local dagothUr = nil
 
 local function onHeartSimulate(e)
     if (tes3.player.position:distance(heart.position) <= 500) then
@@ -19,61 +19,69 @@ local function onHeartSimulate(e)
     end
 end
 
-local function onBarrierSpellCasted(e)
-    barrier:enable()
-    dagothUrSpellCasted = true
-    event.unregister("spellCasted", onBarrierSpellCasted)
-end
-
 stagesDagothUr = {
     ["firstStage"] = {
         initialize = function()
             common.debug("Dagoth Ur Fight: Beginning First Stage")
 
+            -- Get Dagoth Ur reference
+            dagothUr = tes3.getReference(common.data.mechanics.dagothUr.ids.dagothUrs.dagoth_ur_2)
+
             -- Disable barrier.
             barrier = tes3.getReference(barrierId)
-            barrier:disable()
 
-            -- Opening barrier mechanic.
-            local spell = tes3.getObject("shockball")
-            event.register("spellCasted", onBarrierSpellCasted, { filter = spell })
-            tes3.cast({
-                caster = common.data.mechanics.dagothUr.ids.dagothUrs.dagoth_ur_1,
-                target = barrier,
-                spell = spell
-            })
-
-            -- Teleport Dagoth Ur to the second stage area.
-            tes3.positionCell({
-                reference = common.data.mechanics.dagothUr.ids.dagothUrs.dagoth_ur_1,
-                position = {},
-                orientation = {},
-                cell = tes3.player.cell
-            })
-
-            -- Set timer to spawn enemies
+            -- Set timer to continue to teleport dagoth ur.
             timer.start({
-                duration = 5,
-                callback = function ()
-                    tes3.createReference({
-                        object = common.data.mechanics.dagothUr.ids.creatures.ashSlave,
+                duration = 8,
+                callback = function ()          
+                    -- Teleport Dagoth Ur to the second stage area.
+                    tes3.positionCell({
+                        reference = dagothUr,
                         position = tes3.player.position,
                         orientation = tes3.player.orientation,
                         cell = tes3.player.cell
                     })
                 end,
-                iterations = 12
+                iterations = 1
+            })
+
+            local spawnCreatures = function()
+                tes3.createReference({
+                    object = common.data.mechanics.dagothUr.ids.creatures.ashSlave,
+                    position = tes3.player.position,
+                    orientation = tes3.player.orientation,
+                    cell = tes3.player.cell
+                })
+                tes3.createReference({
+                    object = common.data.mechanics.dagothUr.ids.creatures.ashSlave,
+                    position = tes3.player.position,
+                    orientation = tes3.player.orientation,
+                    cell = tes3.player.cell
+                })
+                tes3.createReference({
+                    object = common.data.mechanics.dagothUr.ids.creatures.ascendedSleeper,
+                    position = tes3.player.position,
+                    orientation = tes3.player.orientation,
+                    cell = tes3.player.cell
+                })
+            end
+
+            spawnCreatures()
+            -- Set timer to spawn enemies
+            timer.start({
+                duration = 10,
+                callback = function ()
+                    spawnCreatures()
+                end,
+                iterations = 5
             })
 
             -- Set timer to continue to next stage.
             timer.start({
                 duration = 60,
-                callback = function ()   
-                    if (dagothUrSpellCasted == true) then         
-                        barrier:disable()
-                        tes3.messageBox("The barrier to the next platform dissipates, opening the way to continue.")
-                    end
-
+                callback = function ()          
+                    barrier:disable()
+                    tes3.messageBox("The barrier to the next platform dissipates, opening the way to continue.")
                     stagesDagothUr.secondStage.initialize()
                 end,
                 iterations = 1
@@ -86,12 +94,28 @@ stagesDagothUr = {
 
             -- Resurrect the heartwights & add them to table.
             for _, heartwight in pairs(common.data.mechanics.dagothUr.heartwights) do
-                tes3.createReference({
+
+                local heartwightRef = tes3.createReference({
                     object = heartwight.id,
-                    position = heartwight.position,
-                    orientation = heartwight.orientation,
+                    position = tes3.player.position, -- heartwight.position,
+                    orientation = tes3.player.orientation, -- heartwight.orientation,
                     cell = tes3.player.cell
                 })
+
+                local heartwightRefBaseHealth = heartwightRef.mobile.health.current
+                tes3.modStatistic({
+                    reference = heartwightRef,
+                    name = "health",
+                    current = heartwightRefBaseHealth * .5 * -1
+                })
+
+                local heartwightRefBaseMagicka = heartwightRef.mobile.magicka.current
+                tes3.modStatistic({
+                    reference = heartwightRef,
+                    name = "magicka",
+                    current = heartwightRefBaseMagicka * .5 * -1
+                })
+
             end
 
             -- Get the Heart reference
@@ -110,9 +134,9 @@ stagesDagothUr = {
                 callback = function()                
                     -- Teleport Dagoth Ur to the third stage area, near the heart.
                     tes3.positionCell({
-                        reference = common.data.mechanics.dagothUr.ids.dagothUrs.dagoth_ur_1,
-                        position = {},
-                        orientation = {},
+                        reference = dagothUr,
+                        position = tes3.player.position,
+                        orientation = tes3.player.orientation,
                         cell = tes3.player.cell
                     })
                 end,
@@ -124,7 +148,9 @@ stagesDagothUr = {
 
 
 local function onCellChanged(e)
+    common.debug( cellId .. " - " .. e.cell.id)
     if (cellId == e.cell.id) then
+        common.debug("Dagoth Ur Fight: Initializing fight.")
         stagesDagothUr.firstStage.initialize()
     end
 end

@@ -5,7 +5,7 @@ local journalId = "C3_DestroyDagoth"
 local actor = {
     id = "dagoth gilvoth"
 }
-local forceFieldId = ""
+local forceFieldId = "DDU_LowerFacilityForcefield"
 
 local function onDeath(e)
     local id = e.reference.object.baseObject.id
