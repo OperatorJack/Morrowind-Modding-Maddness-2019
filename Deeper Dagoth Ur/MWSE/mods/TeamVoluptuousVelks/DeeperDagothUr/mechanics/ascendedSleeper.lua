@@ -62,7 +62,7 @@ local function onCombatStartedWithAscendedSleeper(e)
     local player = e.actor
 
     local hasCastHealSpell = false
-    local hasCastSummonAshSlaves = false
+    local castsSummonAshSlaves = 0
 
     local combatTimer
     combatTimer = timer.start({
@@ -74,13 +74,13 @@ local function onCombatStartedWithAscendedSleeper(e)
                 return
             end
 
-            if (hasCastHealSpell and hasCastSummonAshSlaves) then             
+            if (hasCastHealSpell and castsSummonAshSlaves >= 5) then             
                 common.debug("Ascended Sleeper Combat: Ascended sleeper has used all new mechanics. Timer Cancelled.")
                 combatTimer:cancel()
                 return
             end
 
-            if (common.shouldPerformRandomEvent(95) == false) then
+            if (common.shouldPerformRandomEvent(60) == false) then
                 common.debug("Ascended Sleeper Combat: Random Check failed. Continuing on next iteration.")
                 return
             end
@@ -122,7 +122,7 @@ local function onCombatStartedWithAscendedSleeper(e)
                 hasCastHealSpell = true
             end
 
-            if (hasCastSummonAshSlaves == false) then
+            if (castsSummonAshSlaves < 5) then
                 common.debug("Ascended Sleeper Combat: Summoning Ash Slaves.")
 
                 -- Explodes spell, for visual effect.
@@ -132,7 +132,7 @@ local function onCombatStartedWithAscendedSleeper(e)
                     spell = common.data.spellIds.ascendedSleeperSummonAshSlaves
                 })
 
-                hasCastSummonAshSlaves = false
+                castsSummonAshSlaves = castsSummonAshSlaves + 1
             end
         end,
         iterations = 24

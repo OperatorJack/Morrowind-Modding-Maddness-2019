@@ -107,7 +107,7 @@ local function onCombatStartedWithAshVampire(e)
                 return
             end
 
-            if (common.shouldPerformRandomEvent(95) == false) then
+            if (common.shouldPerformRandomEvent(80) == false) then
                 common.debug("Ash Vampire Combat: Random Check failed. Continuing on next iteration.")
                 return
             end
@@ -122,7 +122,7 @@ local function onCombatStartedWithAshVampire(e)
                     spell = common.data.spellIds.ashVampireSummonAscendedSleepers
                 })
 
-                hasCastSummonAscendedSleepers = false
+                hasCastSummonAscendedSleepers = true
             end
         end,
         iterations = 24

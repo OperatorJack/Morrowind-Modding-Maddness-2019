@@ -70,7 +70,8 @@ this.data = {
             ids = {
                 creatures = {
                     ascendedSleeper = "ascended_sleeper",
-                    ashSlave = "ash_slave"
+                    ashSlave = "ash_slave",
+                    ashGhoul = "ash_ghoul"
                 },
                 dagothUrs = {
                     dagoth_ur_1 = "dagoth_ur_1",
@@ -80,38 +81,38 @@ this.data = {
             heartwights = {
                 araynys = {
                     id = "dagoth araynys",
-                    position = {},
-                    orientation = {}
+                    position = {1394, 2056, -4632},
+                    orientation = {0, 0, 337}
                 },
                 endus = {
                     id = "dagoth endus",
-                    position = {},
-                    orientation = {}
+                    position = {-412, 3268, -4313},
+                    orientation = {0, 0, 132}
                 },
                 gilvoth = {
                     id = "dagoth gilvoth",
-                    position = {},
-                    orientation = {}
+                    position = {456, 3748, -4505},
+                    orientation = {0,0,160}
                 },
                 odros = {
                     id = "dagoth odros",
-                    position = {},
-                    orientation = {}
+                    position = {1607, 3638, -4030},
+                    orientation = {0, 0, 212}
                 },
                 tureynul = {
                     id = "dagoth tureynul",
-                    position = {},
-                    orientation = {}
+                    position = {86, 4628, -4673},
+                    orientation = {0, 0, 183}
                 },
                 uthol = {
                     id = "dagoth uthol",
-                    position = {},
-                    orientation = {}
+                    position = {-1356, 4302, -4730},
+                    orientation = {0, 0, 103}
                 },
                 vemyn = {
                     id = "dagoth vemyn",
-                    position = {},
-                    orientation = {}
+                    position = {-521, 4754, -4681},
+                    orientation = {0, 0, 195}
                 } 
             }
         }
