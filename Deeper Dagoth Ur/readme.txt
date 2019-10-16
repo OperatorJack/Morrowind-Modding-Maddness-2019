@@ -33,7 +33,7 @@ Dagoth Ur is no longer an attraction situated on top of a volcano. Now, you will
 
 This mod does not modify the vanilla heart or Dagoth Ur scripts. This means that the method of destroying Dagoth Ur has not changed, nor has any part of the quests involving the final fight. 
 
-Created by the Team Voluptuous Velks: OperatorJack, Petetehgoat, RedFurryDemon, Wolliebeebee.
+Created by the Team Voluptuous Velks: OperatorJack, Petethegoat, RedFurryDemon, Wolliebeebee.
 
 ============
 Permissions
