@@ -189,6 +189,8 @@ stagesDagothUr = {
                         orientation = tes3.player.orientation,
                         cell = tes3.player.cell
                     })
+
+                    tes3.worldController.flagLevitationDisabled = false
                 end,
                 iterations = 1
             })
@@ -201,6 +203,7 @@ local function onCellChanged(e)
     common.debug( cellId .. " - " .. e.cell.id)
     if (cellId == e.cell.id) then
         common.debug("Dagoth Ur Fight: Initializing fight.")
+        tes3.worldController.flagLevitationDisabled = true
         stagesDagothUr.firstStage.initialize()
     end
 end

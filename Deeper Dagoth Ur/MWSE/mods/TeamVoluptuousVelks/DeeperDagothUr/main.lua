@@ -48,7 +48,10 @@ local function onInitialized()
     require("TeamVoluptuousVelks.DeeperDagothUr.mechanics.ascendedSleeper")
     require("TeamVoluptuousVelks.DeeperDagothUr.mechanics.ashVampire")
     require("TeamVoluptuousVelks.DeeperDagothUr.mechanics.dagothUr")
-    require("TeamVoluptuousVelks.DeeperDagothUr.mechanics.ballista")
+
+    -- Cut til next release
+    --require("TeamVoluptuousVelks.DeeperDagothUr.mechanics.ballista")
+
     require("TeamVoluptuousVelks.DeeperDagothUr.mechanics.coil")
     require("TeamVoluptuousVelks.DeeperDagothUr.puzzles.dagothUrLowerFacility")
 

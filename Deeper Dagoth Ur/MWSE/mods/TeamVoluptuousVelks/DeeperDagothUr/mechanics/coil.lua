@@ -3,7 +3,6 @@ local common = require("TeamVoluptuousVelks.DeeperDagothUr.common")
 local journalId = "C3_DestroyDagoth"
 local coilId = "DDU_DwemerCoil"
 local cellIds = {
-    ["OJ_TEST"] = true,
     ["Dagoth Ur"] = true,
     ["Dagoth Ur, Facility Cavern"] = true,
     ["Dagoth Ur, Inner Facility"] = true,
