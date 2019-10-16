@@ -3,7 +3,7 @@ local this = {}
 local debug = true
 
 this.debug = function (message)
-    if (debug) then
+    if (debug == true) then
         local prepend = '[Deeper Dagoth Ur: DEBUG] '
         message = prepend .. message
         mwse.log(message)
