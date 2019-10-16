@@ -55,3 +55,4 @@ Credits
 ========
 Thanks to Bethesda Softworks for developing Morrowind and the Construction Set.
 Thanks to Brucoms for developing the TES3 Readme Generator this readme was made from.
+Thanks to Remiros, Greatness7, PhDinSorcery, Meriyal, Rytelier, R0/Reizeron, SpaceDevo, Tamriel Rebuilt Team, and Darknut for the resources and help they have provided.
