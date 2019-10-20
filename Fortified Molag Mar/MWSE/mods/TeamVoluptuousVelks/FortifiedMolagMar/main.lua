@@ -27,6 +27,13 @@ if (framework == nil) then
 end
 ----------------------------
 
+-- Load Configuration --
+-- Register the mod config menu (using EasyMCM library).
+event.register("modConfigReady", function()
+    dofile("Data Files\\MWSE\\mods\\TeamVoluptuousVelks\\FortifiedMolagMar\\mcm.lua")
+end)
+----------------------------
+
 -- Pre-Init Requires --
 require("TeamVoluptuousVelks.FortifiedMolagMar.events.magicEffectsResolved")
 require("TeamVoluptuousVelks.FortifiedMolagMar.events.registerSpells")
@@ -45,10 +52,10 @@ local function onInitialized()
     math.random()
 
     require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendLost")
-    require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendMourned")
-    require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendReturned")
-    require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendAvenged")
-    require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendReborn")
+    --require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendMourned")
+    --require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendReturned")
+    --require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendAvenged")
+    --require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendReborn")
 
 	print("[Fortified Molag Mar: INFO] Initialized Fortified Molag Mar")
 end

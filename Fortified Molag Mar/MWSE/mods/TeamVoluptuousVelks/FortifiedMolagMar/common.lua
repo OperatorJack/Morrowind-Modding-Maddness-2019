@@ -1,9 +1,8 @@
+local config = require("TeamVoluptuousVelks.FortifiedMolagMar.config")
+
 local this = {}
-
-local debug = true
-
 this.debug = function (message)
-    if (debug == true) then
+    if (config.showDebug == true) then
         local prepend = '[Fortified Molag Mar: DEBUG] '
         message = prepend .. message
         mwse.log(message)
@@ -12,16 +11,18 @@ this.debug = function (message)
 end
 
 this.error = function (message)
-    local prepend = '[Fortified Molag Mar: ERROR] '
-    message = prepend .. message
-    mwse.log(message)
-    tes3.messageBox(message)
+    if (config.showErrors == true) then
+        local prepend = '[Fortified Molag Mar: ERROR] '
+        message = prepend .. message
+        mwse.log(message)
+        tes3.messageBox(message)
+    end
 end
 
 this.data = {
     journalIds = {
-        aFriendLost = "",
-        aFriendMourned = "",
+        aFriendLost = "FMM_BA_01",
+        aFriendMourned = "FMM_BA_02",
         aFriendReturned = "",
         aFriendAvenged = "",
         aFriendReborn = ""
@@ -32,8 +33,8 @@ this.data = {
         dispelEnchantedBarrier = ""
     },
     npcIds = {
-        armiger = "",
-        indaram = "",
+        armiger = "FMM_SarisLerano",
+        indaram = "birer indaram",
         mage = "",
         dremoraLord = "",
         cultist = "",
@@ -45,9 +46,9 @@ this.data = {
         cultActivator = ""
     },
     cellIds = {
-        underworks = "",
+        underworks = "Molag Mar, Underworks",
         tunnel = "",
-        armigersStronghold = ""
+        armigersStronghold = "Molag Mar, Armigers Stronghold"
     },
 
     messageBoxes = {

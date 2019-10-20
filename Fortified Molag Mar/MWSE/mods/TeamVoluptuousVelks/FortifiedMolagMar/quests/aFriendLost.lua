@@ -14,47 +14,56 @@ end
 local function onActivate(e)
     if (e.activator == tes3.player and e.target == armiger) then
         event.unregister("activate", onActivate)
+        common.debug("A Friend Lost: Unregistering Activate Event.")
 
         tes3.updateJournal({
             id = journalId,
-            index = 30
+            index = 60
         })
     end
 end
 
 local function onSimulate(e)
-    local armiger = armiger or tes3.getReference(armigerId)
     if (tes3.player.position:distance(armiger.position) < 500) then
         event.unregister("simulate", onSimulate)
+        common.debug("A Friend Lost: Unregistering Simulate Event.")
 
         tes3.updateJournal({
             id = journalId,
-            index = 20
+            index = 40
         })
     end
 end
 
 local function onCellChanged(e)
     if (e.cell.id == common.data.cellIds.underworks) then
+        armiger = armiger or tes3.getReference(armigerId)    
         event.register("simulate", onSimulate)
+        common.debug("A Friend Lost: Registering Simulate Event.")
     elseif (e.previousCell.id == common.data.cellIds.underworks) then
+        armiger = nil
         event.unregister("simulate", onSimulate)
+        common.debug("A Friend Lost: Unregistering Simulate Event.")
     end
 end
 
 local function processJournalIndexValue()
-    if (journalIndex == 10) then
+    if (journalIndex <= 20) then
         -- Player has been asked to look for the buoyant armiger.
         event.register("cellChanged", onCellChanged)
-    elseif (journalIndex == 20) then
+        common.debug("A Friend Lost: Registering CellChanged Event.")
+    elseif (journalIndex == 40) then
         -- Player has found the buoyant armiger's body in the Underworks.
         event.unregister("cellChanged", onCellChanged)
+        common.debug("A Friend Lost: Unregistering CellChanged Event.")
         event.register("activate", onActivate)
-    elseif (journalIndex == 30) then
+        common.debug("A Friend Lost: Registering Activate Event.")
+    elseif (journalIndex == 60) then
         -- Player found the amulet on the armiger's body.
-    elseif (journalIndex == 40) then
+    elseif (journalIndex == 80) then
         -- Player has completed the quest.
         event.unregister("journal", onJournal)
+        common.debug("A Friend Lost: Unregistering Journal Event.")
     end
 end
 
@@ -62,6 +71,8 @@ onJournal = function(e)
     if (e.topic.id ~= journalId) then
         return
     end
+
+    common.debug("A Friend Lost: Updating Journal Index to: " .. e.index)
 
     updateJournalIndexValue(e.index)
     processJournalIndexValue()
@@ -71,7 +82,9 @@ local registered = false
 local function onLoaded(e)
     if (registered == false) then
         updateJournalIndexValue()
-        if (journalIndex == nil or journalIndex < 40) then
+        if (journalIndex == nil or journalIndex < 80) then
+            common.debug("A Friend Lost: Registering Journal Event.")
+
             event.register("journal", onJournal)
             processJournalIndexValue()
         end
