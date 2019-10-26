@@ -8,7 +8,7 @@ local armigerId = common.data.npcIds.armiger
 local armiger = nil
 
 local function updateJournalIndexValue(index)
-    journalIndex = index or tes3.getJournalIndex(journalId) 
+    journalIndex = index or tes3.getJournalIndex({id = journalId}) 
 end
 
 local function onActivate(e)
@@ -48,7 +48,7 @@ local function onCellChanged(e)
 end
 
 local function processJournalIndexValue()
-    if (journalIndex <= 20) then
+    if (journalIndex == 20) then
         -- Player has been asked to look for the buoyant armiger.
         event.register("cellChanged", onCellChanged)
         common.debug("A Friend Lost: Registering CellChanged Event.")

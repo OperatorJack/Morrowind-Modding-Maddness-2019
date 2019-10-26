@@ -52,12 +52,22 @@ local function onInitialized()
     math.random()
 
     require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendLost")
-    --require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendMourned")
-    --require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendReturned")
-    --require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendAvenged")
+    require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendMourned")
+    require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendReturned")
+    require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendAvenged")
     --require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendReborn")
 
 	print("[Fortified Molag Mar: INFO] Initialized Fortified Molag Mar")
 end
 event.register("initialized", onInitialized)
+----------------------------
+
+-- Loaded Section --
+local function onLoaded()
+    local common = require("TeamVoluptuousVelks.FortifiedMolagMar.common")
+    tes3.player.data.fortifiedMolarMar = tes3.player.data.fortifiedMolarMar or common.data.playerData
+
+	print("[Fortified Molag Mar: INFO] Loaded Fortified Molag Mar")
+end
+event.register("loaded", onLoaded)
 ----------------------------

@@ -20,40 +20,74 @@ this.error = function (message)
 end
 
 this.data = {
+    playerData = {
+        shrines = {
+            ["furn_shrine_vivec_cure_02"] = false,
+            ["furn_shrine_vivec_cure_03"] = false,
+            ["ac_shrine_palace"] = false,
+            ["ac_shrine_stopmoon"] = false,
+            ["ac_shrine_puzzlecanal"] = false,
+            ["ac_shrine_koalcave"] = false,
+            ["ac_shrine_gnisis"] = false,
+        },
+        artifactCharged = true
+    },
     journalIds = {
         aFriendLost = "FMM_BA_01",
         aFriendMourned = "FMM_BA_02",
-        aFriendReturned = "",
+        aFriendReturned = "FMM_BA_03",
         aFriendAvenged = "",
         aFriendReborn = ""
     },
     spellIds = {
         slowTime = "FMM_SlowTimeSpell",
+        slowTimeShrine = "FMM_SlowTimeShrineSpell",
         annihilate = "FMM_AnnihilateSpell",
-        dispelEnchantedBarrier = ""
+        dispelEnchantedBarrier = "FMM_DispelBarrierSpell",
+        banishDaedra = "FMM_LesserBanishDaedraSpell",
+        firesOfOblivion = "FMM_FiresOfOblivion"
+    },
+    enchantmentIds = {
+        banishDaedra = "FMM_BanishWeapon_e",
+        slowTime = "FMM_SlowTimeRing_e",
+        bucketHelm = "FMM_BucketHelmet_e"
     },
     npcIds = {
         armiger = "FMM_SarisLerano",
         indaram = "birer indaram",
-        mage = "",
+        mage = "FMM_Ulyll",
+        vivec = "",
         dremoraLord = "",
-        cultist = "",
-        weakCultist = "",
-        genericArmiger = ""
+        cultist = "FMM_Cultist_u",
+        weakCultist = "FMM_GenericCultist",
+        genericArmiger = "FMM_BuoyantArmigerGuard"
     },
     objectIds = {
-        enchantedBarrier = "",
-        cultActivator = ""
+        enchantedBarrier = "FMM_EnchantedBarrier",
+        cultActivator = "FMM_CultFightMarker",
+        amulet = "FMM_Amulet_01",
+        banishWeapon = "FMM_BanishWeapon",
+        artifactChargedRing = "FMM_SlowTimeChargedRing",
+        artifactDischargedRing = "FMM_SlowTimeDischargedRing",
+        artifactShrine = "FMM_TempleShrine",
+        firesOfOblivion = "FMM_FiresOfOblivionVFX"
     },
     cellIds = {
         underworks = "Molag Mar, Underworks",
-        tunnel = "",
-        armigersStronghold = "Molag Mar, Armigers Stronghold"
+        armigersStronghold = "Molag Mar, Armigers Stronghold",
+        battlements = ""
     },
 
     messageBoxes = {
         enchantedBarrierActivate = "No no sir, no es here.",
-        mageSkirmishDialogue = "You hear your companion yell, 'This one looks especially tough, be careful against him!'"
+        mageSkirmishDialogue = "You hear your companion yell, 'This one looks especially tough, be careful against him!'",
+        shrinesCompletedDialogue = "Finished shrines",
+        shrinesInProgressDialogue = "Amulet get bigger",
+        shrinesNoAmuletDialogue = "wear amulet bro",
+        mageDeathDialogue = "Plz take artifact",
+        cultistRetreatDialogue = "Cultists retreated",
+        artifactShrineWithDischargedArtifact = "Hello w Artifacnt",
+        artifactShrineNoDischargedArtifact = "Hello no artifact"
     }
 }
 
