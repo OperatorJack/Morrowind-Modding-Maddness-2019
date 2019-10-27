@@ -5,9 +5,82 @@ local journalIndex = nil
 local onJournal = nil
 
 local enchantedBarrierId = common.data.objectIds.enchantedBarrier
+local armigerId = common.data.npcIds.armiger
+local grateAId = common.data.objectIds.grateA
+local grateBId = common.data.objectIds.grateB
+local ritualActivatorId = common.data.objectIds.ritualSiteActivator
 
 local function updateJournalIndexValue(index)
     journalIndex = index or tes3.getJournalIndex({id = journalId}) 
+end
+
+local function onStageTwoSimulate(e)
+    local ritualActivator = tes3.getReference(ritualActivatorId)
+    if (tes3.player.position:distance(ritualActivator.position) < 500) then
+        event.unregister("simulate", onStageTwoSimulate)
+
+        tes3.updateJournal({
+            id = journalId,
+            index = 25
+        })
+    end
+end
+
+local function onStageOneSimulate(e)
+    event.unregister("simulate", onStageOneSimulate)
+
+    local armiger = tes3.getReference(armigerId)   
+    if (armiger) then
+        armiger:disable()
+        timer.delayOneFrame({
+            callback = function()
+                common.debug("A Friend Mourned: Armiger Deleted.")
+                armiger.deleted = true
+            end
+        })
+    end
+
+    local grateA = tes3.getReference(grateAId)
+    if (grateA) then
+        tes3.createReference({
+            object = grateBId,
+            position = grateA.position,
+            orientation = grateA.orientation,
+            cell = grateA.cell
+        })
+        common.debug("A Friend Mourned: Grate B Created.")
+
+        grateA:disable()
+        timer.delayOneFrame({
+            callback = function()
+                common.debug("A Friend Mourned: Grate A Deleted.")
+                grateA.deleted = true
+            end
+        })
+    end
+    
+    event.register("simulate", onStageTwoSimulate)
+    event.unregister("simulate", onStageTwoSimulate)
+end
+
+local function onStageTwoCellChanged(e)
+    if (e.cell.id == common.data.cellIds.underworks) then
+        event.register("simulate", onStageTwoSimulate)
+        common.debug("A Friend Mourned: Registering Simulate Event.")
+    elseif (e.previousCell and e.previousCell.id == common.data.cellIds.underworks) then
+        event.unregister("simulate", onStageTwoSimulate)
+        common.debug("A Friend Mourned: Unregistering Simulate Event.")
+    end
+end
+
+local function onStageOneCellChanged(e)
+    if (e.cell.id == common.data.cellIds.underworks) then
+        event.register("simulate", onStageOneSimulate)
+        common.debug("A Friend Mourned: Registering Simulate Event.")
+    elseif (e.previousCell and e.previousCell.id == common.data.cellIds.underworks) then
+        event.unregister("simulate", onStageOneSimulate)
+        common.debug("A Friend Mourned: Unregistering Simulate Event.")
+    end
 end
 
 local function onActivate(e)
@@ -31,9 +104,18 @@ local function processJournalIndexValue()
         -- and investigate the area.
         event.unregister("activate", onActivate)
         event.register("activate", onActivate)
+        event.register("cellChanged", onStageOneCellChanged)
+        common.debug("A Friend Mourned: Registered Activate Event.")
+    elseif (journalIndex == 25) then
+        -- Player has found the armiger is missing.
+        event.unregister("activate", onActivate)
+        event.register("activate", onActivate)
+        event.register("cellChanged", onStageTwoCellChanged)
         common.debug("A Friend Mourned: Registered Activate Event.")
     elseif (journalIndex == 30) then
         -- Player has found evidence of a daedric cult.
+        event.unregister("cellChanged", onStageOneCellChanged)
+        event.unregister("cellChanged", onStageTwoCellChanged)
         event.unregister("activate", onActivate)
         event.register("activate", onActivate)
         common.debug("A Friend Mourned: Registered Activate Event.")

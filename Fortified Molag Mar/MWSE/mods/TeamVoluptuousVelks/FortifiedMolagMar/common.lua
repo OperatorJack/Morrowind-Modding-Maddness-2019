@@ -65,12 +65,15 @@ this.data = {
     objectIds = {
         enchantedBarrier = "FMM_EnchantedBarrier",
         cultActivator = "FMM_CultFightMarker",
+        ritualSiteActivator = "FMM_RitualSiteMarker",
         amulet = "FMM_Amulet_01",
         banishWeapon = "FMM_BanishWeapon",
         artifactChargedRing = "FMM_SlowTimeChargedRing",
         artifactDischargedRing = "FMM_SlowTimeDischargedRing",
         artifactShrine = "FMM_TempleShrine",
-        firesOfOblivion = "FMM_FiresOfOblivionVFX"
+        firesOfOblivion = "FMM_FiresOfOblivionVFX",
+        grateA = "FMM_grate_03a",
+        grateB = "FMM_grate_03b"
     },
     cellIds = {
         underworks = "Molag Mar, Underworks",

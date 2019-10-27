@@ -44,32 +44,6 @@ local function triggerTunnelFight()
     table.insert(cultists, spawnCultist({-1845, -3893, 22}))
     table.insert(cultists, spawnCultist({-1684, -3496, 22}))
     table.insert(cultists, spawnCultist({-1832, -3649, 22}))
-       
-    local orientationRad = tes3vector3.new(
-        math.rad(0),
-        math.rad(0),
-        math.rad(0)
-    )
-
-    tes3.positionCell({
-        reference = mage,
-        position = {-1686, -645, 32},
-        orientation = orientationRad,
-        cell = tes3.player.cell
-    })
-
-    tes3.positionCell({
-        reference = armiger1,
-        position = {-1727, -1211, 32},
-        orientation = orientationRad,
-        cell = tes3.player.cell
-    })
-    tes3.positionCell({
-        reference = armiger2,
-        position = {-2359, -1463, 32},
-        orientation = orientationRad,
-        cell = tes3.player.cell
-    })
 
     for _, cultistRef in pairs(cultists) do
         mwscript.startCombat({
@@ -195,43 +169,10 @@ local function onFightSimulate(e)
     end
 end
 
-local underworksSimulateDoOnce = false
-local function onUnderworksSimulate(e)
-    if (underworksSimulateDoOnce == false) then
-        local orientationRad = tes3vector3.new(
-            math.rad(0),
-            math.rad(0),
-            math.rad(86)
-        )
-        
-        mage = tes3.createReference({
-            object = mageId,
-            position = {2276, -6058, 496},
-            orientation = orientationRad,
-            cell = tes3.player.cell
-        })
-
-        armiger1 = tes3.createReference({
-            object = armigerId,
-            position = {2156, -6007, 496},
-            orientation = orientationRad,
-            cell = tes3.player.cell
-        })
-        armiger2 = tes3.createReference({
-            object = armigerId,
-            position = {2172, -6187, 496},
-            orientation = orientationRad,
-            cell = tes3.player.cell
-        })
-
-        underworksSimulateDoOnce = true
-    end
-    
+local function onUnderworksStageTwoSimulate(e)
     if (tes3.player.position:distance(mage.position) < 500) then
         common.debug("A Friend Returned: Casting spell on barrier.")
-
-        underworksSimulateCastDoOnce = true
-        event.unregister("simulate", onUnderworksSimulate)
+        event.unregister("simulate", onUnderworksStageTwoSimulate)
 
         local enchantedBarrier = tes3.getReference(enchantedBarrierId)
         local spell = tes3.getObject(common.data.spellIds.dispelEnchantedBarrier)
@@ -273,7 +214,39 @@ local function onUnderworksSimulate(e)
     end
 end
 
-local function onCellChangedStageTwo(e)
+local function onUnderworksStageOneSimulate(e)
+    event.unregister("simulate", onUnderworksStageOneSimulate)
+    local orientationRad = tes3vector3.new(
+        math.rad(0),
+        math.rad(0),
+        math.rad(86)
+    )
+    
+    mage = tes3.createReference({
+        object = mageId,
+        position = {2276, -6058, 496},
+        orientation = orientationRad,
+        cell = tes3.player.cell
+    })
+
+    armiger1 = tes3.createReference({
+        object = armigerId,
+        position = {2156, -6007, 496},
+        orientation = orientationRad,
+        cell = tes3.player.cell
+    })
+    armiger2 = tes3.createReference({
+        object = armigerId,
+        position = {2172, -6187, 496},
+        orientation = orientationRad,
+        cell = tes3.player.cell
+    })
+        
+    event.unregister("simulate", onUnderworksStageTwoSimulate)
+    event.register("simulate", onUnderworksStageTwoSimulate)
+end
+
+local function onCellChangedStageThree(e)
     if (e.cell.id == common.data.cellIds.underworks) then
         event.register("simulate", onFightSimulate)
         common.debug("A Friend Returned: Registering Simulate Event.")
@@ -282,12 +255,21 @@ local function onCellChangedStageTwo(e)
         common.debug("A Friend Returned: Unregistering Simulate Event.")
     end
 end
-local function onCellChangedStageOne(e)
+local function onCellChangedStageTwo(e)
     if (e.cell.id == common.data.cellIds.underworks) then
-        event.register("simulate", onUnderworksSimulate)
+        event.register("simulate", onUnderworksStageTwoSimulate)
         common.debug("A Friend Returned: Registering Simulate Event.")
     elseif (e.previousCell and e.previousCell.id == common.data.cellIds.underworks) then
-        event.unregister("simulate", onUnderworksSimulate)
+        event.unregister("simulate", onUnderworksStageTwoSimulate)
+        common.debug("A Friend Returned: Unregistering Simulate Event.")
+    end
+end
+local function onCellChangedStageOne(e)
+    if (e.cell.id == common.data.cellIds.underworks) then
+        event.register("simulate", onUnderworksStageOneSimulate)
+        common.debug("A Friend Returned: Registering Simulate Event.")
+    elseif (e.previousCell and e.previousCell.id == common.data.cellIds.underworks) then
+        event.unregister("simulate", onUnderworksStageOneSimulate)
         common.debug("A Friend Returned: Unregistering Simulate Event.")
     end
 end
@@ -298,13 +280,17 @@ local function processJournalIndexValue()
     elseif (journalIndex == 40) then
         -- Player has been told to meet the Mage at the enchanted barrier.
         event.register("cellChanged", onCellChangedStageOne)
-    elseif (journalIndex == 60) then
+    elseif (journalIndex == 50) then
+        -- Player has talked to the Mage by the enchanted barrier.
         event.unregister("cellChanged", onCellChangedStageOne)
         event.register("cellChanged", onCellChangedStageTwo)
+    elseif (journalIndex == 60) then
+        event.unregister("cellChanged", onCellChangedStageTwo)
+        event.register("cellChanged", onCellChangedStageThree)
         -- Player has been told to continue through the tunnel.
     elseif (journalIndex == 80) then
         -- Player has been teleported out by the group Amvisi Intervention spell.
-        event.unregister("cellChanged", onCellChangedStageTwo)
+        event.unregister("cellChanged", onCellChangedStageThree)
     elseif (journalIndex == 100) then
         -- Player has completed the quest.
         event.unregister("journal", onJournal)
