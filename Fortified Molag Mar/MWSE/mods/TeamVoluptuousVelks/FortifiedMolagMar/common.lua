@@ -22,22 +22,25 @@ end
 this.data = {
     playerData = {
         shrines = {
-            ["furn_shrine_vivec_cure_02"] = false,
-            ["furn_shrine_vivec_cure_03"] = false,
+            ["Furn_shrine_Vivec_cure_02"] = false,
+            ["Furn_shrine_Vivec_cure_03"] = false,
             ["ac_shrine_palace"] = false,
             ["ac_shrine_stopmoon"] = false,
             ["ac_shrine_puzzlecanal"] = false,
             ["ac_shrine_koalcave"] = false,
             ["ac_shrine_gnisis"] = false,
         },
-        artifactCharged = true
+        artifactCharged = true,
+        variables = {
+            hasSpawnedActorsByEnchantedBarrier = false
+        }
     },
     journalIds = {
         aFriendLost = "FMM_BA_01",
         aFriendMourned = "FMM_BA_02",
         aFriendReturned = "FMM_BA_03",
-        aFriendAvenged = "",
-        aFriendReborn = ""
+        aFriendAvenged = "FMM_BA_04",
+        aFriendReborn = "FMM_BA_05"
     },
     spellIds = {
         slowTime = "FMM_SlowTimeSpell",
@@ -56,7 +59,7 @@ this.data = {
         armiger = "FMM_SarisLerano",
         indaram = "birer indaram",
         mage = "FMM_Ulyll",
-        vivec = "",
+        vivec = "vivec_god",
         dremoraLord = "",
         cultist = "FMM_Cultist_u",
         weakCultist = "FMM_GenericCultist",
@@ -78,7 +81,7 @@ this.data = {
     cellIds = {
         underworks = "Molag Mar, Underworks",
         armigersStronghold = "Molag Mar, Armigers Stronghold",
-        battlements = ""
+        battlements = "Molag Mar"
     },
 
     messageBoxes = {

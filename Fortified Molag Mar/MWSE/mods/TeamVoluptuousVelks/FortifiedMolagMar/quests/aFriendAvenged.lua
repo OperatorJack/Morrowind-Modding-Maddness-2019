@@ -226,7 +226,7 @@ local function onSimulate(e)
     end
 
     local cultActivator = tes3.getReference(cultActivatorId)
-    if (tes3.player.position:distance(cultActivator.position) < 500) then
+    if (tes3.player.position:distance(cultActivator.position) < 1500) then
         event.unregister("simulate", onSimulate)
         common.debug("A Friend Avenged: Unregistering Tunnel Simulate Event.")
 
@@ -247,21 +247,27 @@ end
 
 local function onShrineActivate(e)
     local targetId = e.target.object.id
-    if (tes3.player.data.fortifiedMolarMar.shrines[targetId]) then
+    if (common.data.playerData.shrines[targetId] ~= nil) then
+        common.debug("A Friend Avenged: Target ID: " .. targetId)
         common.debug("A Friend Avenged: Shrine Activated.")
         
+        if (tes3.player.data.fortifiedMolarMar.shrines[targetId] == true) then
+            return
+        end
+
         local isAmuletEquipped = mwscript.hasItemEquipped({
             reference = tes3.player,
             item = common.data.objectIds.amulet
         })
+
         if (isAmuletEquipped == true) then
             common.debug("A Friend Avenged: Amulet is equipped.")
             
             tes3.player.data.fortifiedMolarMar.shrines[targetId] = true
 
             local done = true
-            for _, shrine in pairs (tes3.player.data.fortifiedMolarMar.shrines) do
-                if (shrine == false) then
+            for shrineId, state in pairs(common.data.playerData.shrines) do
+                if (tes3.player.data.fortifiedMolarMar.shrines[shrineId] == nil or tes3.player.data.fortifiedMolarMar.shrines[shrineId] == false) then
                     done = false
                 end
             end
@@ -270,16 +276,16 @@ local function onShrineActivate(e)
                 event.unregister("activate", onShrineActivate)
                 common.debug("A Friend Avenged: Unregistering Shrine Activate Event.")
 
-                tes3.messageBox(common.data.messageBox.shrinesCompletedDialogue)
+                tes3.messageBox(common.data.messageBoxes.shrinesCompletedDialogue)
                 tes3.updateJournal({
                     id = journalId,
                     index = 60
                 })
             else
-                tes3.messageBox(common.data.messageBox.shrinesInProgressDialogue)   
+                tes3.messageBox(common.data.messageBoxes.shrinesInProgressDialogue)   
             end
         else
-            tes3.messageBox(common.data.messageBox.shrinesNoAmuletDialogue)
+            tes3.messageBox(common.data.messageBoxes.shrinesNoAmuletDialogue)
         end
     end
 end

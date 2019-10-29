@@ -59,8 +59,8 @@ local function onStageOneSimulate(e)
         })
     end
     
-    event.register("simulate", onStageTwoSimulate)
     event.unregister("simulate", onStageTwoSimulate)
+    event.register("simulate", onStageTwoSimulate)
 end
 
 local function onStageTwoCellChanged(e)

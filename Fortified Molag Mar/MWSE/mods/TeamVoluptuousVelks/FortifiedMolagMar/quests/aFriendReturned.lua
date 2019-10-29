@@ -110,24 +110,24 @@ local function triggerTunnelFight()
                             duration = 2
                         })
 
-                        mage:disable()
-                        armiger1:disable()
-                        armiger2:disable()
-                        cultist:disable()
-
-                        timer.delayOneFrame({
-                            callback = function()
-                                mage.deleted = true
-                                armiger1.deleted = true
-                                armiger2.deleted = true
-                                cultist.deleted = true
-                            end
-                        })
-
                         timer.start({
                             duration = 3,
                             iterations = 1,
                             callback = function ()
+                                mage:disable()
+                                armiger1:disable()
+                                armiger2:disable()
+                                cultist:disable()
+        
+                                timer.delayOneFrame({
+                                    callback = function()
+                                        mage.deleted = true
+                                        armiger1.deleted = true
+                                        armiger2.deleted = true
+                                        cultist.deleted = true
+                                    end
+                                })
+
                                 tes3.fadeIn({
                                     duration = 2
                                 })
@@ -170,6 +170,10 @@ local function onFightSimulate(e)
 end
 
 local function onUnderworksStageTwoSimulate(e)
+    if (journalIndex ~= 50) then
+        return
+    end
+
     if (tes3.player.position:distance(mage.position) < 500) then
         common.debug("A Friend Returned: Casting spell on barrier.")
         event.unregister("simulate", onUnderworksStageTwoSimulate)
@@ -216,6 +220,10 @@ end
 
 local function onUnderworksStageOneSimulate(e)
     event.unregister("simulate", onUnderworksStageOneSimulate)
+    if (tes3.player.data.fortifiedMolarMar.variables.hasSpawnedActorsByEnchantedBarrier == true) then
+        return
+    end
+
     local orientationRad = tes3vector3.new(
         math.rad(0),
         math.rad(0),
@@ -241,7 +249,9 @@ local function onUnderworksStageOneSimulate(e)
         orientation = orientationRad,
         cell = tes3.player.cell
     })
-        
+
+    tes3.player.data.fortifiedMolarMar.variables.hasSpawnedActorsByEnchantedBarrier = true
+
     event.unregister("simulate", onUnderworksStageTwoSimulate)
     event.register("simulate", onUnderworksStageTwoSimulate)
 end
