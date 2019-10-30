@@ -8,6 +8,24 @@ local tomes = {
   }, 
 }
 
+local function createSlowTimeEnchantment()
+  local enchantment = tes3.getObject(common.data.enchantmentIds.slowTime)
+
+  if (enchantment == nil) then
+    return nil
+  end
+
+  local effect = enchantment.effects[1]
+  effect.id = tes3.effect.slowTime
+  effect.rangeType = tes3.effectRange.self
+  effect.min = 50
+  effect.max = 50
+  effect.duration = 10
+  effect.radius = 0
+
+  return enchantment
+end
+
 local function createBucketHelmEnchantment()
   local enchantment = tes3.getObject(common.data.enchantmentIds.bucketHelm)
 
@@ -88,6 +106,7 @@ local function registerSpells()
 
   createBanishDaedraEnchantment()
   createBucketHelmEnchantment()
+  createSlowTimeEnchantment()
 
   magickaExpanded.tomes.registerTomes(tomes)
 end

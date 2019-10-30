@@ -32,7 +32,8 @@ this.data = {
         },
         artifactCharged = true,
         variables = {
-            hasSpawnedActorsByEnchantedBarrier = false
+            hasSpawnedActorsByEnchantedBarrier = false,
+            hasSpawnedActorsForSecondTunnelFight = false,
         }
     },
     journalIds = {

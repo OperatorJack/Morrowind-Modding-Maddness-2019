@@ -13,22 +13,27 @@ local function charge()
 
     local equipped = mwscript.hasItemEquipped({
         reference = tes3.player,
-        item = common.objectIds.artifactDischargedRing
+        item = common.data.objectIds.artifactDischargedRing
     })
 
     mwscript.removeItem({
         reference = tes3.player,
-        item = common.objectIds.artifactDischargedRing
+        item = common.data.objectIds.artifactDischargedRing
     })
     if (equipped == true) then
+        mwscript.addItem({
+            reference = tes3.player,
+            item = common.data.objectIds.artifactChargedRing,
+            count = 1
+        })
         mwscript.equip({
             reference = tes3.player,
-            item = common.objectIds.artifactChargedRing
+            item = common.data.objectIds.artifactChargedRing
         })
     else
         mwscript.addItem({
             reference = tes3.player,
-            item = common.objectIds.artifactChargedRing,
+            item = common.data.objectIds.artifactChargedRing,
             count = 1
         })
     end
@@ -41,22 +46,27 @@ local function discharge()
 
     local equipped = mwscript.hasItemEquipped({
         reference = tes3.player,
-        item = common.objectIds.artifactChargedRing
+        item = common.data.objectIds.artifactChargedRing
     })
 
     mwscript.removeItem({
         reference = tes3.player,
-        item = common.objectIds.artifactChargedRing
+        item = common.data.objectIds.artifactChargedRing
     })
     if (equipped == true) then
+        mwscript.addItem({
+            reference = tes3.player,
+            item = common.data.objectIds.artifactDischargedRing,
+            count = 1
+        })
         mwscript.equip({
             reference = tes3.player,
-            item = common.objectIds.artifactDischargedRing
+            item = common.data.objectIds.artifactDischargedRing
         })
     else
         mwscript.addItem({
             reference = tes3.player,
-            item = common.objectIds.artifactDischargedRing,
+            item = common.data.objectIds.artifactDischargedRing,
             count = 1
         })
     end
@@ -66,10 +76,9 @@ local function onArtifactEnchantmentCasted(e)
     if (e.caster ~= tes3.player) then
         return
     end
-
-    common.debug("Artifact: Enchantment casted.")
     
     if (e.source.id == common.data.enchantmentIds.slowTime) then
+        common.debug("Artifact: Enchantment casted.")
         discharge()
     end
 end
@@ -94,7 +103,7 @@ local function onShrineActivate(e)
 
     local dischargedArtifactCount = mwscript.getItemCount({
         reference = tes3.player,
-        item = common.objectIds.artifactDischargedRing
+        item = common.data.objectIds.artifactDischargedRing
     })
 
     if (dischargedArtifactCount > 0) then

@@ -117,9 +117,13 @@ local function triggerTunnelFight()
                                     
                                     tes3.messageBox(common.data.messageBoxes.mageDeathDialogue)
                         
+                                    mwscript.addItem({
+                                        reference = tes3.player,
+                                        item = common.data.objectIds.artifactChargedRing
+                                    })
                                     mwscript.equip({
                                         reference = tes3.player,
-                                        item = common.objectIds.artifactChargedRing
+                                        item = common.data.objectIds.artifactChargedRing
                                     })
                         
                                     mage.mobile:applyHealthDamage(9999999)
@@ -133,38 +137,44 @@ local function triggerTunnelFight()
                                             tes3.fadeOut({
                                                 duration = 2
                                             })
-                                
-                                            cultist:disable()
-                                            for _,cultistRef in pairs(cultists) do
-                                                cultistRef:disable()
-                                            end
-                                
-                                            timer.delayOneFrame({
-                                                callback = function()
-                                                    cultist.deleted = true
-                                                    for _,cultistRef in pairs(cultists) do
-                                                        cultistRef.deleted = true
-                                                    end
-                                                end
-                                            })
-                                
-                                            tes3.messageBox(common.data.messageBoxes.cultistRetreatDialogue)
-                                
+
                                             timer.start({
-                                                duration = 3,
+                                                duration = 2,
                                                 iterations = 1,
-                                                callback = function ()
-                                                    common.debug("A Friend Avenged: Processing retreat.")
-
-                                                    tes3.worldController.flagTeleportingDisabled = false
-                                                    
-                                                    tes3.fadeIn({
-                                                        duration = 2
+                                                callback = function()
+                                                    cultist:disable()
+                                                    for _,cultistRef in pairs(cultists) do
+                                                        cultistRef:disable()
+                                                    end
+                                        
+                                                    timer.delayOneFrame({
+                                                        callback = function()
+                                                            cultist.deleted = true
+                                                            for _,cultistRef in pairs(cultists) do
+                                                                cultistRef.deleted = true
+                                                            end
+                                                        end
                                                     })
-
-                                                    tes3.updateJournal({
-                                                        id = journalId,
-                                                        index = 100
+                                        
+                                                    tes3.messageBox(common.data.messageBoxes.cultistRetreatDialogue)
+                                        
+                                                    timer.start({
+                                                        duration = 3,
+                                                        iterations = 1,
+                                                        callback = function ()
+                                                            common.debug("A Friend Avenged: Processing retreat.")
+        
+                                                            tes3.worldController.flagTeleportingDisabled = false
+                                                            
+                                                            tes3.fadeIn({
+                                                                duration = 2
+                                                            })
+        
+                                                            tes3.updateJournal({
+                                                                id = journalId,
+                                                                index = 100
+                                                            })
+                                                        end
                                                     })
                                                 end
                                             })
@@ -180,9 +190,8 @@ local function triggerTunnelFight()
     })
 end
 
-local simulateDoOnce = false
 local function onSimulate(e)
-    if (simulateDoOnce == false) then
+    if (tes3.player.data.fortifiedMolarMar.variables.hasSpawnedActorsForSecondTunnelFight ~= true) then
         local orientationRad = tes3vector3.new(
             math.rad(0),
             math.rad(0),
@@ -222,11 +231,11 @@ local function onSimulate(e)
         })
         common.debug("A Friend Avenged: Simulate Event DoOnce complete.")
 
-        simulateDoOnce = true
+        tes3.player.data.fortifiedMolarMar.variables.hasSpawnedActorsForSecondTunnelFight = true
     end
 
     local cultActivator = tes3.getReference(cultActivatorId)
-    if (tes3.player.position:distance(cultActivator.position) < 1500) then
+    if (tes3.player.position:distance(cultActivator.position) < 2500) then
         event.unregister("simulate", onSimulate)
         common.debug("A Friend Avenged: Unregistering Tunnel Simulate Event.")
 
@@ -239,7 +248,7 @@ local function onCellChanged(e)
     if (e.cell.id == common.data.cellIds.underworks) then
         event.register("simulate", onSimulate)
         common.debug("A Friend Avenged: Registering Simulate Event.")
-    elseif (e.previousCell.id == common.data.cellIds.underworks) then
+    elseif (e.previousCell and e.previousCell.id == common.data.cellIds.underworks) then
         event.unregister("simulate", onSimulate)
         common.debug("A Friend Avenged: Unregistering Tunnel Simulate Event.")
     end
@@ -303,7 +312,8 @@ local function processJournalIndexValue()
         -- Player has been instructed to meet the Mage at the previous cultist location.
         event.register("cellChanged", onCellChanged)        
     elseif (journalIndex == 100) then
-        -- Player has been given the artifact.        
+        -- Player has been given the artifact.  
+        event.unregister("cellChanged", onCellChanged)         
     elseif (journalIndex == 120) then
         -- Player has reported the situation to Indaram.
         event.unregister("journal", onJournal)

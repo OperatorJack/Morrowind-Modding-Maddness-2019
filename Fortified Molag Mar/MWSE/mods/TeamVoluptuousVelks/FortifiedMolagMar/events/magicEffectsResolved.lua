@@ -29,7 +29,7 @@ local function onSlowTimeTick(e)
 	if (timeShift == false) then
 		common.debug("Slow Time Effect: Slowing time.")
 
-		local effect = framework.functions.getEffectFromEffectOnEffectEvent(e, tes3.effect.banishDaedra)
+		local effect = framework.functions.getEffectFromEffectOnEffectEvent(e, tes3.effect.slowTime)
 		local magnitude = framework.functions.getCalculatedMagnitudeFromEffect(effect)
 
 		event.register("simulate", onSimulate)
