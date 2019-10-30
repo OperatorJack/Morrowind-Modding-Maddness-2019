@@ -90,12 +90,6 @@ local function registerSpells()
     radius = 10
   })
   magickaExpanded.spells.createBasicSpell({
-    id = common.data.spellIds.firesOfOblivion,
-    name = "Fires of Oblivion",
-    effect = tes3.effect.firesOfOblivion,
-    range = tes3.effectRange.target
-  })
-  magickaExpanded.spells.createBasicSpell({
     id = common.data.spellIds.banishDaedra,
     name = "Lesser Banish Daedra",
     effect = tes3.effect.banishDaedra,
@@ -103,6 +97,16 @@ local function registerSpells()
     min = 5,
     max = 15
   })
+  
+  magickaExpanded.spells.createBasicSpell({
+    id = common.data.spellIds.firesOfOblivion,
+    name = "Fires of Oblivion",
+    effect = tes3.effect.firesOfOblivion,
+    range = tes3.effectRange.target
+  })
+
+  local firesOfOblivionSpell = tes3.getObject(common.data.spellIds.firesOfOblivion)
+  firesOfOblivionSpell.magickaCost = 200
 
   createBanishDaedraEnchantment()
   createBucketHelmEnchantment()

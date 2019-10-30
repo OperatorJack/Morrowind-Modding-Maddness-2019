@@ -162,7 +162,7 @@ end
 
 local function onFightSimulate(e)
     local cultActivator = tes3.getReference(cultActivatorId)
-    if (tes3.player.position:distance(cultActivator.position) < 5000) then
+    if (tes3.player.position:distance(cultActivator.position) < 2500) then
         event.unregister("simulate", onFightSimulate)
 
         triggerTunnelFight()

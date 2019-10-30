@@ -101,7 +101,7 @@ local function triggerTunnelFight()
                     })
     
                     timer.start({
-                        duration = 10,
+                        duration = 5,
                         iterations = 1,
                         callback = function()
                             common.debug("A Friend Avenged: Killing Armiger 1 & 2.")
@@ -110,7 +110,7 @@ local function triggerTunnelFight()
                             armiger2.mobile:applyHealthDamage(9999)
     
                             timer.start({
-                                duration = 10,
+                                duration = 7,
                                 iterations = 1,
                                 callback = function()
                                     common.debug("A Friend Avenged: Killing Mage & equipping artifact.")

@@ -35,9 +35,97 @@ local function spawnCultist(position)
     })
 end
 
+local function onBattleStageThreeSimulate(e)
+    event.unregister("simulate", onBattleStageThreeSimulate)
+
+    timer.start({
+        iterations = 1,
+        duration = 15,
+        callback = function()
+            local vivec = tes3.createReference({
+                object = common.data.npcIds.vivec,
+                position = tes3.player.position,
+                orientation = tes3.player.orientation,
+                cell = tes3.player.cell
+            })
+
+            timer.start({
+                iterations = 1,
+                duration = 3,
+                callback = function()
+                    local dremoraLord = tes3.getReference(common.data.npcIds.dremoraLord)
+                    tes3.cast({
+                        reference = vivec,
+                        target = dremoraLord,
+                        spell = common.data.spellIds.annihilate
+                    })
+
+                    timer.start({
+                        iterations = 1,
+                        duration = 3,
+                        callback = function()
+                            dremoraLord:disable()
+                            timer.delayOneFrame({
+                                callback = function()
+                                    dremoraLord.deleted = true
+                                end
+                            })
+                    
+                            tes3.updateJournal({
+                                id = journalId,
+                                index = 100
+                            })
+                        end
+                    })
+                end
+            })
+        end
+    })
+end
+
 local function onBattleStageTwoSimulate(e)
     event.unregister("simulate", onBattleStageTwoSimulate)
 
+    timer.start({
+        iterations = 1,
+        duration = 15,
+        callback = function()
+            local oldGate = tes3.getReference(common.data.objectIds.exteriorGateNormal)
+            
+            mwscript.explodeSpell({
+                reference = oldGate,
+                spell = common.data.spellIds.gateExplosion
+            })
+
+            local newGate = tes3.createReference({
+                object = common.data.objectIds.exteriorGateBroken,
+                position = oldGate.position,
+                orientation = oldGate.orientation,
+                cell = oldGate.cell
+            })
+
+            local dremoraLord = tes3.getReference(common.data.npcIds.dremoraLord)
+            tes3.positionCell({
+                reference = dremoraLord,
+                position = newGate.position,
+                orientation = newGate.orientation,
+                cell = newGate.cell
+            })
+
+            oldGate:disable()
+
+            timer.delayOneFrame({
+                callback = function()
+                    oldGate.deleted = true
+                end
+            })
+     
+            tes3.updateJournal({
+                id = journalId,
+                index = 80
+            })
+        end
+    })
 end
 
 local function onBattleStageOneSimulate(e)
@@ -109,11 +197,24 @@ local function onBattleStageOneSimulate(e)
                 callback = function()
                     common.debug("A Friend Reborn: Stage One: Creating Dremora Lord.")
 
+                    deadArmiger:disable()
+
+                    timer.delayOneFrame({
+                        callback = function()
+                            deadArmiger.deleted = true
+                        end
+                    })
+
                     local dremoraLord = tes3.createReference({
                         object = common.data.npcIds.dremoraLord,
                         position = {0,0,0},
                         orientation = tes3.player.orientation,
                         cell = tes3.player.cell
+                    })
+
+                    mwscript.addSpell({
+                        reference = dremoraLord,
+                        spell = common.data.spellIds.firesOfOblivion
                     })
 
                     local actors = common.getActorsNearTargetPosition(tes3.player.cell, dremoraLord.position, 200)
@@ -123,14 +224,6 @@ local function onBattleStageOneSimulate(e)
                     for _, actor in pairs(actors) do
                         actor.mobile:applyHealthDamage(9999999)
                     end
-
-                    deadArmiger:disable()
-
-                    timer.delayOneFrame({
-                        callback = function()
-                            deadArmiger.deleted = true
-                        end
-                    })
      
                     tes3.updateJournal({
                         id = journalId,
@@ -171,6 +264,8 @@ local function processJournalIndexValue()
         common.debug("A Friend Reborn: Registering Stage Two Simulate Event.")
     elseif (journalIndex == 80) then
         -- Molar Mar was breached.
+        event.register("simulate", onBattleStageThreeSimulate)
+        common.debug("A Friend Reborn: Registering Stage Three Simulate Event.")
     elseif (journalIndex == 100) then
         -- Player has been saved by Vivec.
     elseif (journalIndex == 120) then
