@@ -57,7 +57,7 @@ local function onInitialized()
     require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendMourned")
     require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendReturned")
     require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendAvenged")
-    --require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendReborn")
+    require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendReborn")
 
 	print("[Fortified Molag Mar: INFO] Initialized Fortified Molag Mar")
 end
