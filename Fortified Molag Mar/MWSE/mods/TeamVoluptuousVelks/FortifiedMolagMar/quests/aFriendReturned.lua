@@ -236,7 +236,7 @@ local function onUnderworksStageOneSimulate(e)
 
     local armiger1Marker = tes3.getReference(common.data.markerIds.underworks.barrier.armiger1)
     armiger1 = tes3.createReference({
-        object = armigerId,
+        object = common.data.npcIds.barrierArmiger1,
         position = armiger1Marker.position,
         orientation = armiger1Marker.orientation,
         cell = tes3.player.cell
@@ -244,7 +244,7 @@ local function onUnderworksStageOneSimulate(e)
     
     local armiger2Marker = tes3.getReference(common.data.markerIds.underworks.barrier.armiger2) 
     armiger2 = tes3.createReference({
-        object = armigerId,
+        object = common.data.npcIds.barrierArmiger2,
         position = armiger2Marker.position,
         orientation = armiger2Marker.orientation,
         cell = tes3.player.cell
