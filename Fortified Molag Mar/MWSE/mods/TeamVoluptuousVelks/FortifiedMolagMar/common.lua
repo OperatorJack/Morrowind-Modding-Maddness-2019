@@ -50,7 +50,8 @@ this.data = {
         dispelEnchantedBarrier = "FMM_DispelBarrierSpell",
         banishDaedra = "FMM_LesserBanishDaedraSpell",
         firesOfOblivion = "FMM_FiresOfOblivion",
-        gateExplosion = "FMM_NukeGateSpell"
+        gateExplosion = "FMM_NukeGateSpell",
+        amuletReflect = "FMM_VivecBlessing"
     },
     enchantmentIds = {
         banishDaedra = "FMM_BanishWeapon_e",
@@ -73,6 +74,7 @@ this.data = {
         ritualSiteActivator = "FMM_RitualSiteMarker",
         evidenceActivator = "FMM_EvidenceMarker",
         amulet = "FMM_Amulet_01",
+        giftAmulet = "FMM_Amulet_01v",
         banishWeapon = "FMM_BanishWeapon",
         artifactChargedRing = "FMM_SlowTimeChargedRing",
         artifactDischargedRing = "FMM_SlowTimeDischargedRing",
@@ -99,7 +101,8 @@ this.data = {
         mageDeathDialogue = "'Take this,' Ulyll says with his last breath as he gives you the artifact.",
         cultistRetreatDialogue = "Seeing Ulyll use the artifact, the cultists break into flight.",
         artifactShrineWithDischargedArtifact = "Would you like to sacrifice some of your blood and ask for a blessing, or recharge the artifact for a higher price?",
-        artifactShrineNoDischargedArtifact = "Would you like to sacrifice some of your blood and ask for a blessing?"
+        artifactShrineNoDischargedArtifact = "Would you like to sacrifice some of your blood and ask for a blessing?",
+        amuletDischarge = "As you clutch the amulet in your hand and whisper a prayer to Lord Vivec, divine power washes over you. Then, the amulet crumbles to dust."
     },
     markerIds = {
         underworks = {

@@ -52,6 +52,7 @@ local function onInitialized()
     math.random()
 
     require("TeamVoluptuousVelks.FortifiedMolagMar.mechanics.artifact")
+    require("TeamVoluptuousVelks.FortifiedMolagMar.mechanics.amulet")
 
     require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendLost")
     require("TeamVoluptuousVelks.FortifiedMolagMar.quests.aFriendMourned")
