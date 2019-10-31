@@ -188,7 +188,9 @@ local function addFiresOfOblivionEffect()
 		hasNoDuration = true,
 		canCastTouch = true,
 		canCastTarget = true,
-        nonRecastable = false,
+		nonRecastable = false,
+		isHarmful = true,
+		hasContinuousVFX = true,
 
 		-- Graphics/sounds.
         lighting = { 0, 0, 0 },

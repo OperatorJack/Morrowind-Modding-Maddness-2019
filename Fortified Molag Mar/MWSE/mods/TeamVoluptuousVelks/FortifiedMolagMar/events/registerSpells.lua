@@ -104,10 +104,7 @@ local function registerSpells()
     effect = tes3.effect.firesOfOblivion,
     range = tes3.effectRange.target
   })
-
-  local firesOfOblivionSpell = tes3.getObject(common.data.spellIds.firesOfOblivion)
-  firesOfOblivionSpell.magickaCost = 200
-
+  
   createBanishDaedraEnchantment()
   createBucketHelmEnchantment()
   createSlowTimeEnchantment()

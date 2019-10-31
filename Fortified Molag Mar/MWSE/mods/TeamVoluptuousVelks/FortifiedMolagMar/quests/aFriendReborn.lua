@@ -13,6 +13,8 @@ local indaram = nil
 local cultistId = common.data.npcIds.cultist
 local cultist = nil
 
+local dremoraLordTimer = nil
+
 local function updateJournalIndexValue(index)
     journalIndex = index or tes3.getJournalIndex({id = journalId}) 
 end
@@ -42,7 +44,7 @@ local function onBattleStageThreeSimulate(e)
 
     timer.start({
         iterations = 1,
-        duration = 15,
+        duration = 20,
         callback = function()
 
             local vivecReference = tes3.getReference(common.data.markerIds.battlements.vivec)
@@ -68,11 +70,20 @@ local function onBattleStageThreeSimulate(e)
                         iterations = 1,
                         duration = 3,
                         callback = function()
+                            dremoraLordTimer:cancel()
+
                             dremoraLord:disable()
                             timer.delayOneFrame({
                                 callback = function()
                                     dremoraLord.deleted = true
                                 end
+                            })
+                            
+                            tes3.createReference({
+                                object = common.data.objectIds.dremoraLordAshes,
+                                position = dremoraLord.position,
+                                orientation = dremoraLord.orientation,
+                                cell = tes3.player.cell
                             })
                     
                             tes3.updateJournal({
@@ -96,37 +107,45 @@ local function onBattleStageTwoSimulate(e)
         callback = function()
             local oldGate = tes3.getReference(common.data.objectIds.exteriorGateNormal)
             
-            mwscript.explodeSpell({
+            local spell = tes3.getObject(common.data.spellIds.gateExplosion)
+            tes3.cast({
                 reference = oldGate,
-                spell = common.data.spellIds.gateExplosion
+                target = oldGate,
+                spell = spell
             })
 
-            local newGate = tes3.createReference({
-                object = common.data.objectIds.exteriorGateBroken,
-                position = oldGate.position,
-                orientation = oldGate.orientation,
-                cell = oldGate.cell
-            })
-
-            local dremoraLord = tes3.getReference(common.data.npcIds.dremoraLord)
-            tes3.positionCell({
-                reference = dremoraLord,
-                position = newGate.position,
-                orientation = newGate.orientation,
-                cell = newGate.cell
-            })
-
-            oldGate:disable()
-
-            timer.delayOneFrame({
+            timer.start({
+                iterations = 1,
+                duration = 2,
                 callback = function()
-                    oldGate.deleted = true
+                    local newGate = tes3.createReference({
+                        object = common.data.objectIds.exteriorGateBroken,
+                        position = oldGate.position,
+                        orientation = oldGate.orientation,
+                        cell = oldGate.cell
+                    })
+        
+                    local dremoraLord = tes3.getReference(common.data.npcIds.dremoraLord)
+                    tes3.positionCell({
+                        reference = dremoraLord,
+                        position = newGate.position,
+                        orientation = newGate.orientation,
+                        cell = newGate.cell
+                    })
+        
+                    oldGate:disable()
+        
+                    timer.delayOneFrame({
+                        callback = function()
+                            oldGate.deleted = true
+                        end
+                    })
+             
+                    tes3.updateJournal({
+                        id = journalId,
+                        index = 80
+                    })
                 end
-            })
-     
-            tes3.updateJournal({
-                id = journalId,
-                index = 80
             })
         end
     })
@@ -205,38 +224,73 @@ local function onBattleStageOneSimulate(e)
                 callback = function()
                     common.debug("A Friend Reborn: Stage One: Creating Dremora Lord.")
 
-                    deadArmiger:disable()
+                    local spell = tes3.getObject(common.data.spellIds.gateExplosion)
+                    tes3.cast({
+                        reference = deadArmiger,
+                        target = deadArmiger,
+                        spell = spell
+                    })
 
-                    timer.delayOneFrame({
+                    timer.start({
+                        duration = 2,
+                        iterations = 1,
                         callback = function()
-                            deadArmiger.deleted = true
+                            deadArmiger:disable()
+                            cultist:disable()
+        
+                            timer.delayOneFrame({
+                                callback = function()
+                                    deadArmiger.deleted = true
+                                    cultist.deleted = true
+                                end
+                            })
+        
+                            local dremoraLordReference = tes3.getReference(common.data.markerIds.battlements.dremoraLord)
+                            local dremoraLord = tes3.createReference({
+                                object = common.data.npcIds.dremoraLord,
+                                position = dremoraLordReference.position,
+                                orientation = dremoraLordReference.orientation,
+                                cell = tes3.player.cell
+                            })
+        
+                            for _, armiger in pairs(armigers) do
+                                mwscript.startCombat({
+                                    reference = armiger,
+                                    target = dremoraLord
+                                })
+                                mwscript.startCombat({
+                                    reference = dremoraLord,
+                                    target = armiger
+                                })
+                            end
+        
+                            dremoraLordTimer = timer.start({
+                                iterations = -1,
+                                duration = 3,
+                                callback = function ()
+                                    tes3.cast({
+                                        reference = dremoraLord,
+                                        target = tes3.player,
+                                        spell = common.data.spellIds.firesOfOblivion
+                                    })
+                                end
+                            })
+        
+                            local actors = common.getActorsNearTargetPosition(tes3.player.cell, dremoraLord.position, 200)
+        
+                            common.debug("A Friend Reborn: Stage One: Killing nearby actors.")
+        
+                            for _, actor in pairs(actors) do
+                                if (actor ~= dremoraLord) then
+                                    actor.mobile:applyHealthDamage(9999999)
+                                end
+                            end
+             
+                            tes3.updateJournal({
+                                id = journalId,
+                                index = 60
+                            })
                         end
-                    })
-
-                    local dremoraLordReference = tes3.getReference(common.data.markerIds.battlements.dremoraLord)
-                    local dremoraLord = tes3.createReference({
-                        object = common.data.npcIds.dremoraLord,
-                        position = dremoraLordReference.position,
-                        orientation = dremoraLordReference.orientation,
-                        cell = tes3.player.cell
-                    })
-
-                    mwscript.addSpell({
-                        reference = dremoraLord,
-                        spell = common.data.spellIds.firesOfOblivion
-                    })
-
-                    local actors = common.getActorsNearTargetPosition(tes3.player.cell, dremoraLord.position, 200)
-
-                    common.debug("A Friend Reborn: Stage One: Killing nearby actors.")
-
-                    for _, actor in pairs(actors) do
-                        actor.mobile:applyHealthDamage(9999999)
-                    end
-     
-                    tes3.updateJournal({
-                        id = journalId,
-                        index = 60
                     })
                 end
             })
