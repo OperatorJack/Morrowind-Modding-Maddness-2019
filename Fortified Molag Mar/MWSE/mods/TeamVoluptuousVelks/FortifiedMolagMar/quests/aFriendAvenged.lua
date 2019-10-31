@@ -23,11 +23,12 @@ local function updateJournalIndexValue(index)
     journalIndex = index or tes3.getJournalIndex({id = journalId}) 
 end
 
-local function spawnCultist(position)
+local function spawnCultist(id)
+    local reference = tes3.getReference(id)
     return tes3.createReference({
         object = weakCultistId,
-        position = position,
-        orientation = tes3.player.orientation,
+        position = reference.position,
+        orientation = reference.orientation,
         cell = tes3.player.cell
     })
 end
@@ -38,14 +39,14 @@ local function triggerTunnelFight()
     tes3.worldController.flagTeleportingDisabled = true
 
     local cultists = {}
-    table.insert(cultists, spawnCultist({-2429, -2814, 32}))
-    table.insert(cultists, spawnCultist({-2543, -2774, 32}))
-    table.insert(cultists, spawnCultist({-2370, -2617, 32}))
-    table.insert(cultists, spawnCultist({-2380, -2434, 32}))
-    table.insert(cultists, spawnCultist({-1744, -2843, 32}))
-    table.insert(cultists, spawnCultist({-1592, -2801, 32}))
-    table.insert(cultists, spawnCultist({-1680, -2638, 32}))
-    table.insert(cultists, spawnCultist({-1725, -2454, 32}))
+    table.insert(cultists, spawnCultist(common.data.markerIds.underworks.secondSkirmish.cultist1))
+    table.insert(cultists, spawnCultist(common.data.markerIds.underworks.secondSkirmish.cultist2))
+    table.insert(cultists, spawnCultist(common.data.markerIds.underworks.secondSkirmish.cultist3))
+    table.insert(cultists, spawnCultist(common.data.markerIds.underworks.secondSkirmish.cultist4))
+    table.insert(cultists, spawnCultist(common.data.markerIds.underworks.secondSkirmish.cultist5))
+    table.insert(cultists, spawnCultist(common.data.markerIds.underworks.secondSkirmish.cultist6))
+    table.insert(cultists, spawnCultist(common.data.markerIds.underworks.secondSkirmish.cultist7))
+    table.insert(cultists, spawnCultist(common.data.markerIds.underworks.secondSkirmish.cultist8))
 
     for _, cultistRef in pairs(cultists) do
         mwscript.startCombat({
@@ -87,16 +88,11 @@ local function triggerTunnelFight()
                 callback = function()
                     common.debug("A Friend Avenged: Spawning Powerful Cultist.")
 
-                    local orientationRad = tes3vector3.new(
-                        math.rad(0),
-                        math.rad(0),
-                        math.rad(7)
-                    )
-                       
+                    local cultistsLeaderReference = tes3.getReference(common.data.markerIds.underworks.secondSkirmish.cultistLeader)
                     cultist = tes3.createReference({
                         object = cultistId,
-                        position = {-1587, -2775, 32},
-                        orientation = orientationRad,
+                        position = cultistsLeaderReference.position,
+                        orientation = cultistsLeaderReference.orientation,
                         cell = tes3.player.cell
                     })
     
@@ -192,41 +188,40 @@ end
 
 local function onSimulate(e)
     if (tes3.player.data.fortifiedMolarMar.variables.hasSpawnedActorsForSecondTunnelFight ~= true) then
-        local orientationRad = tes3vector3.new(
-            math.rad(0),
-            math.rad(0),
-            math.rad(183)
-        )
-
+        local mageReference = tes3.getReference(common.data.markerIds.underworks.secondSkirmish.mage)
         mage = tes3.createReference({
             object = mageId,
-            position = {-1969, -3862, 32},
-            orientation = orientationRad,
+            position = mageReference.position,
+            orientation = mageReference.orientation,
             cell = tes3.player.cell
         })
 
+        local armiger1Reference = tes3.getReference(common.data.markerIds.underworks.secondSkirmish.mage)
         armiger1 = tes3.createReference({
             object = armigerId,
-            position = {-1840, -3936, 32},
-            orientation = orientationRad,
+            position = armiger1Reference.position,
+            orientation = armiger1Reference.orientation,
             cell = tes3.player.cell
         })
+        local armiger2Reference = tes3.getReference(common.data.markerIds.underworks.secondSkirmish.mage)
         armiger2 = tes3.createReference({
             object = armigerId,
-            position = {-2270, -3933, 32},
-            orientation = orientationRad,
+            position = armiger2Reference.position,
+            orientation = armiger2Reference.orientation,
             cell = tes3.player.cell
         })
+        local armiger3Reference = tes3.getReference(common.data.markerIds.underworks.secondSkirmish.mage)
         armiger3 = tes3.createReference({
             object = armigerId,
-            position = {-2262, -3763, 32},
-            orientation = orientationRad,
+            position = armiger3Reference.position,
+            orientation = armiger3Reference.orientation,
             cell = tes3.player.cell
         })
+        local armiger4Reference = tes3.getReference(common.data.markerIds.underworks.secondSkirmish.mage)
         armiger4 = tes3.createReference({
             object = armigerId,
-            position = {-2368, -3606, 32},
-            orientation = orientationRad,
+            position = armiger4Reference.position,
+            orientation = armiger4Reference.orientation,
             cell = tes3.player.cell
         })
         common.debug("A Friend Avenged: Simulate Event DoOnce complete.")
@@ -272,6 +267,11 @@ local function onShrineActivate(e)
 
         if (isBadGuy() == true) then
             tes3.messageBox(common.data.messageBoxes.shrinesBadGuyDialogue)
+
+            mwscript.removeItem({
+                reference = tes3.player,
+                item = common.data.objectIds.amulet
+            })
 
             tes3.updateJournal({
                 id = journalId,

@@ -88,18 +88,70 @@ this.data = {
         armigersStronghold = "Molag Mar, Armigers Stronghold",
         battlements = "Molag Mar"
     },
-
     messageBoxes = {
-        enchantedBarrierActivate = "No no sir, no es here.",
-        mageSkirmishDialogue = "You hear your companion yell, 'This one looks especially tough, be careful against him!'",
-        shrinesCompletedDialogue = "Finished shrines",
-        shrinesInProgressDialogue = "Amulet get bigger",
-        shrinesNoAmuletDialogue = "wear amulet bro",
-        shrinesBadGuyDialogue = "no thx, u bad",
-        mageDeathDialogue = "Plz take artifact",
-        cultistRetreatDialogue = "Cultists retreated",
-        artifactShrineWithDischargedArtifact = "Hello w Artifacnt",
-        artifactShrineNoDischargedArtifact = "Hello no artifact"
+        enchantedBarrierActivate = "The barrier feels cold in touch. You cannot pass through it.",
+        mageSkirmishDialogue = "You hear Ulyll yell, 'Be careful!'",
+        shrinesCompletedDialogue = "The amulet flashes brightly with blue fire. You feel a great evil leave you.",
+        shrinesInProgressDialogue = "You feel a wave of warmth radiating from the amulet.",
+        shrinesNoAmuletDialogue = "You pray at the shrine, but then you realize you're not wearing the amulet.",
+        shrinesBagGuyDialogue = "As you have finished praying under the shrine, the amulet shatters.",
+        mageDeathDialogue = "'Take this,' Ulyll says with his last breath as he gives you the artifact.",
+        cultistRetreatDialogue = "Seeing Ulyll use the artifact, the cultists break into flight.",
+        artifactShrineWithDischargedArtifact = "Would you like to sacrifice some of your blood and ask for a blessing, or recharge the artifact for a higher price?",
+        artifactShrineNoDischargedArtifact = "Would you like to sacrifice some of your blood and ask for a blessing?"
+    },
+    markerIds = {
+        underworks = {
+            barrier = {
+                mage = "",
+                armiger1 = "",
+                armiger2 = ""
+            },
+            firstSkirmish = {
+                cultistLeader = "",
+                cultist1 = "",
+                cultist2 = "",
+                cultist3 = "",
+                cultist4 = "",
+                cultist5 = "",
+                cultist6 = "",
+            },
+            secondSkirmish = {
+                mage = "",
+                armiger1 = "",
+                armiger2 = "",
+                armiger3 = "",
+                armiger4 = "",
+                cultistLeader = "",
+                cultist1 = "",
+                cultist2 = "",
+                cultist3 = "",
+                cultist4 = "",
+                cultist5 = "",
+                cultist6 = "",
+                cultist7 = "",
+                cultist8 = "",
+            }
+        },
+        battlements = {
+            indaram = "FMM_fb_IndaramMarker",
+            vivec = "FMM_fb_VivecMarker",
+            cultistLeader = "FMM_fb_CultLeaderMarker",
+            deadArmiger = "FMM_fb_SarisMarker",
+            dremoraLord = "FMM_fb_DremoraMarker",
+
+            armiger1 = "FMM_fb_Armiger01Marker",
+            armiger2 = "FMM_fb_Armiger02Marker",
+            armiger3 = "FMM_fb_Armiger03Marker",
+            armiger4 = "FMM_fb_Armiger04Marker",
+
+            cultist1 = "FMM_fb_Cultist01Marker",
+            cultist2 = "FMM_fb_Cultist02Marker",
+            cultist3 = "FMM_fb_Cultist03Marker",
+            cultist4 = "FMM_fb_Cultist04Marker",
+            cultist5 = "FMM_fb_Cultist05Marker",
+            cultist6 = "FMM_fb_Cultist06Marker",
+        }
     },
 
     bannedJournals = {

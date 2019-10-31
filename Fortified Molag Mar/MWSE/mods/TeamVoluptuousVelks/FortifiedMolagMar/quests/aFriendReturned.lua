@@ -23,11 +23,12 @@ local function updateJournalIndexValue(index)
     journalIndex = index or tes3.getJournalIndex({id = journalId}) 
 end
 
-local function spawnCultist(position)
+local function spawnCultist(id)
+    local reference = tes3.getReference(id)
     return tes3.createReference({
         object = weakCultistId,
-        position = position,
-        orientation = tes3.player.orientation,
+        position = reference.position,
+        orientation = reference.orientation,
         cell = tes3.player.cell
     })
 end
@@ -38,12 +39,12 @@ local function triggerTunnelFight()
     tes3.worldController.flagTeleportingDisabled = true
 
     local cultists = {}
-    table.insert(cultists, spawnCultist({-2442, -3242, 22}))
-    table.insert(cultists, spawnCultist({-2373, -3592, 22}))
-    table.insert(cultists, spawnCultist({-2045, -3861, 22}))
-    table.insert(cultists, spawnCultist({-1845, -3893, 22}))
-    table.insert(cultists, spawnCultist({-1684, -3496, 22}))
-    table.insert(cultists, spawnCultist({-1832, -3649, 22}))
+    table.insert(cultists, spawnCultist(common.data.markerIds.underworks.firstSkirmish.cultist1))
+    table.insert(cultists, spawnCultist(common.data.markerIds.underworks.firstSkirmish.cultist2))
+    table.insert(cultists, spawnCultist(common.data.markerIds.underworks.firstSkirmish.cultist3))
+    table.insert(cultists, spawnCultist(common.data.markerIds.underworks.firstSkirmish.cultist4))
+    table.insert(cultists, spawnCultist(common.data.markerIds.underworks.firstSkirmish.cultist5))
+    table.insert(cultists, spawnCultist(common.data.markerIds.underworks.firstSkirmish.cultist6))
 
     for _, cultistRef in pairs(cultists) do
         mwscript.startCombat({
@@ -76,10 +77,11 @@ local function triggerTunnelFight()
             
                 combatTimer:cancel()
 
+                local cultistLeaderReference = tes3.getReference(common.data.markerIds.underworks.firstSkirmish.cultistLeader)
                 cultist = tes3.createReference({
                     object = cultistId,
-                    position = {-1787, -1973, 32},
-                    orientation = tes3.player.orientation,
+                    position = cultistLeaderReference.position,
+                    orientation = cultistLeaderReference.orientation,
                     cell = tes3.player.cell
                 })
 
@@ -223,30 +225,28 @@ local function onUnderworksStageOneSimulate(e)
     if (tes3.player.data.fortifiedMolarMar.variables.hasSpawnedActorsByEnchantedBarrier == true) then
         return
     end
-
-    local orientationRad = tes3vector3.new(
-        math.rad(0),
-        math.rad(0),
-        math.rad(86)
-    )
     
+    local mageMarker = tes3.getReference(common.data.markerIds.underworks.barrier.mage)
     mage = tes3.createReference({
         object = mageId,
-        position = {2276, -6058, 496},
-        orientation = orientationRad,
+        position = mageMarker.position,
+        orientation = mageMarker.orientation,
         cell = tes3.player.cell
     })
 
+    local armiger1Marker = tes3.getReference(common.data.markerIds.underworks.barrier.armiger1)
     armiger1 = tes3.createReference({
         object = armigerId,
-        position = {2156, -6007, 496},
-        orientation = orientationRad,
+        position = armiger1Marker.position,
+        orientation = armiger1Marker.orientation,
         cell = tes3.player.cell
     })
+    
+    local armiger2Marker = tes3.getReference(common.data.markerIds.underworks.barrier.armiger2) 
     armiger2 = tes3.createReference({
         object = armigerId,
-        position = {2172, -6187, 496},
-        orientation = orientationRad,
+        position = armiger2Marker.position,
+        orientation = armiger2Marker.orientation,
         cell = tes3.player.cell
     })
 

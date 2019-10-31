@@ -3,11 +3,8 @@ local common = require("TeamVoluptuousVelks.FortifiedMolagMar.common")
 local function charge()
     common.debug("Artifact: Charging Artifact.")
 
-    tes3.modStatistic({
-        reference = tes3.mobilePlayer,
-        name = "health",
-        base = tes3.mobilePlayer.health.base * .9
-    })
+    local damage = tes3.mobilePlayer.health.current * .20
+    tes3.mobilePlayer:applyHealthDamage(damage)
 
     tes3.player.data.fortifiedMolarMar.artifactCharged = true
 

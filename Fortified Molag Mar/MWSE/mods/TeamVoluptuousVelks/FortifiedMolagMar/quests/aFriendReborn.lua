@@ -17,20 +17,22 @@ local function updateJournalIndexValue(index)
     journalIndex = index or tes3.getJournalIndex({id = journalId}) 
 end
 
-local function spawnArmiger(position)
+local function spawnArmiger(id)
+    local reference = tes3.getReference(id)
     return tes3.createReference({
         object = armigerId,
-        position = position,
-        orientation = tes3.player.orientation,
+        position = reference.position,
+        orientation = reference.orientation,
         cell = tes3.player.cell
     })
 end
 
-local function spawnCultist(position)
+local function spawnCultist(id)
+    local reference = tes3.getReference(id)
     return tes3.createReference({
         object = weakCultistId,
-        position = position,
-        orientation = tes3.player.orientation,
+        position = reference.position,
+        orientation = reference.orientation,
         cell = tes3.player.cell
     })
 end
@@ -42,10 +44,12 @@ local function onBattleStageThreeSimulate(e)
         iterations = 1,
         duration = 15,
         callback = function()
+
+            local vivecReference = tes3.getReference(common.data.markerIds.battlements.vivec)
             local vivec = tes3.createReference({
                 object = common.data.npcIds.vivec,
-                position = tes3.player.position,
-                orientation = tes3.player.orientation,
+                position = vivecReference.position,
+                orientation = vivecReference.orientation,
                 cell = tes3.player.cell
             })
 
@@ -136,29 +140,33 @@ local function onBattleStageOneSimulate(e)
     local armigers = {}
     local cultists = {}
 
-    table.insert(armigers, spawnArmiger({0,0,0}))
-    table.insert(armigers, spawnArmiger({0,0,0}))
-    table.insert(armigers, spawnArmiger({0,0,0}))
-    table.insert(armigers, spawnArmiger({0,0,0}))
+    local indaramMarker = tes3.getReference(common.data.markerIds.battlements.indaram)
 
-    table.insert(cultists, spawnCultist({0,0,0}))
-    table.insert(cultists, spawnCultist({0,0,0}))
-    table.insert(cultists, spawnCultist({0,0,0}))
-    table.insert(cultists, spawnCultist({0,0,0}))
-    table.insert(cultists, spawnCultist({0,0,0}))
-    table.insert(cultists, spawnCultist({0,0,0}))
+    table.insert(armigers, spawnArmiger(common.data.markerIds.battlements.armiger1))
+    table.insert(armigers, spawnArmiger(common.data.markerIds.battlements.armiger2))
+    table.insert(armigers, spawnArmiger(common.data.markerIds.battlements.armiger3))
+    table.insert(armigers, spawnArmiger(common.data.markerIds.battlements.armiger4))
 
+    table.insert(cultists, spawnCultist(common.data.markerIds.battlements.cultist1))
+    table.insert(cultists, spawnCultist(common.data.markerIds.battlements.cultist2))
+    table.insert(cultists, spawnCultist(common.data.markerIds.battlements.cultist3))
+    table.insert(cultists, spawnCultist(common.data.markerIds.battlements.cultist4))
+    table.insert(cultists, spawnCultist(common.data.markerIds.battlements.cultist5))
+    table.insert(cultists, spawnCultist(common.data.markerIds.battlements.cultist6))
+
+    local cultistLeaderReference = tes3.getReference(common.data.markerIds.battlements.cultistLeader)
     cultist = tes3.createReference({
         object = cultistId,
-        position = {0,0,0},
-        orientation = tes3.player.orientation,
+        position = cultistLeaderReference.position,
+        orientation = cultistLeaderReference.orientation,
         cell = tes3.player.cell
     })
 
+    local deadArmigerReference = tes3.getReference(common.data.markerIds.battlements.deadArmiger)
     local deadArmiger = tes3.createReference({
         object = common.data.npcIds.armiger,
-        position = {0,0,0},
-        orientation = tes3.player.orientation,
+        position = deadArmigerReference.position,
+        orientation = deadArmigerReference.orientation,
         cell = tes3.player.cell
     })
 
@@ -205,10 +213,11 @@ local function onBattleStageOneSimulate(e)
                         end
                     })
 
+                    local dremoraLordReference = tes3.getReference(common.data.markerIds.battlements.dremoraLord)
                     local dremoraLord = tes3.createReference({
                         object = common.data.npcIds.dremoraLord,
-                        position = {0,0,0},
-                        orientation = tes3.player.orientation,
+                        position = dremoraLordReference.position,
+                        orientation = dremoraLordReference.orientation,
                         cell = tes3.player.cell
                     })
 
@@ -237,10 +246,11 @@ end
 
 local function onCellChanged(e)
     if (e.cell.id == common.data.cellIds.battlements) then
+        local indaramMarker = tes3.getReference(common.data.markerIds.battlements.indaram)
         tes3.positionCell({
             reference = indaramId,
-            position = {0,0,0},
-            orientation = {0,0,0},
+            position = indaramMarker.position,
+            orientation = indaramMarker.orientation,
             cell = tes3.player.cell
         })
         
