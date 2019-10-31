@@ -84,9 +84,13 @@ local function onArtifactEnchantmentCasted(e)
 end
 event.register("magicCasted", onArtifactEnchantmentCasted)
 
-local function castAlterSpell(alter)
+local function castAlterSpell()
     common.debug("Artifact: Casting alter spell.")
+
+    local damage = tes3.mobilePlayer.health.current * .03
+    tes3.mobilePlayer:applyHealthDamage(damage)
     
+    local alter = tes3.getReference(common.data.objectIds.artifactShrine)
     tes3.cast({
         reference = alter,
         target = tes3.player,
@@ -113,7 +117,7 @@ local function onShrineActivate(e)
             callback = function(e)
                 if (e ~= nil) then
                     if (e.button == 0) then
-                        castAlterSpell(e.target)
+                        castAlterSpell()
                     elseif (e.button == 1) then
                         charge()
                     else
@@ -129,7 +133,7 @@ local function onShrineActivate(e)
             callback = function(e)
                 if (e ~= nil) then
                     if (e.button == 0) then
-                        castAlterSpell(e.target)
+                        castAlterSpell()
                     else
                         return
                     end

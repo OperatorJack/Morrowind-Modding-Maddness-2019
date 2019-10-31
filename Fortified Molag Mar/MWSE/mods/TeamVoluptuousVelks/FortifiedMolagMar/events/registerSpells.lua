@@ -74,7 +74,7 @@ local function registerSpells()
     max = 50
   })
   magickaExpanded.spells.createBasicSpell({
-    id = common.data.spellIds.slowTime,
+    id = common.data.spellIds.slowTimeShrine,
     name = "Slow Time - Shrine",
     effect = tes3.effect.slowTime,
     range = tes3.effectRange.target,

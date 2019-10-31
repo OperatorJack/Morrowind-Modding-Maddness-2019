@@ -33,7 +33,7 @@ local function onSlowTimeTick(e)
 		local magnitude = framework.functions.getCalculatedMagnitudeFromEffect(effect)
 
 		event.register("simulate", onSimulate)
-		timeShift = magnitude / 100
+		timeShift = 1.01 - (magnitude / 100)
 	end
 
 	if (e.effectInstance.state == tes3.spellState.ending) then		
