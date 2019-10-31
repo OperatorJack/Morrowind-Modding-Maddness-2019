@@ -71,6 +71,7 @@ this.data = {
         enchantedBarrier = "FMM_EnchantedBarrier",
         cultActivator = "FMM_CultFightMarker",
         ritualSiteActivator = "FMM_RitualSiteMarker",
+        evidenceActivator = "FMM_EvidenceMarker",
         amulet = "FMM_Amulet_01",
         banishWeapon = "FMM_BanishWeapon",
         artifactChargedRing = "FMM_SlowTimeChargedRing",
@@ -94,10 +95,18 @@ this.data = {
         shrinesCompletedDialogue = "Finished shrines",
         shrinesInProgressDialogue = "Amulet get bigger",
         shrinesNoAmuletDialogue = "wear amulet bro",
+        shrinesBadGuyDialogue = "no thx, u bad",
         mageDeathDialogue = "Plz take artifact",
         cultistRetreatDialogue = "Cultists retreated",
         artifactShrineWithDischargedArtifact = "Hello w Artifacnt",
         artifactShrineNoDischargedArtifact = "Hello no artifact"
+    },
+
+    bannedJournals = {
+        ["DA_Malacath"] = 60,
+        ["DA_Mehrunes"] = 30,
+        ["DA_MolagBal"] = 30,
+        ["DA_Sheogorath"] = 60
     }
 }
 

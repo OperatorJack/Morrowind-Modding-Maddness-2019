@@ -109,7 +109,7 @@ local function onShrineActivate(e)
     if (dischargedArtifactCount > 0) then
         tes3.messageBox({
             message = common.data.messageBoxes.artifactShrineWithDischargedArtifact,
-            buttons = { "Pray at Alter", "Recharge Artifact", "Cancel"},
+            buttons = { "Pray at the shrine", "Recharge Artifact", "Cancel"},
             callback = function(e)
                 if (e ~= nil) then
                     if (e.button == 0) then
@@ -125,7 +125,7 @@ local function onShrineActivate(e)
     else
         tes3.messageBox({
             message = common.data.messageBoxes.artifactShrineNoDischargedArtifact,
-            buttons = { "Pray at Alter", "Cancel"},
+            buttons = { "Pray at the shrine", "Cancel"},
             callback = function(e)
                 if (e ~= nil) then
                     if (e.button == 0) then

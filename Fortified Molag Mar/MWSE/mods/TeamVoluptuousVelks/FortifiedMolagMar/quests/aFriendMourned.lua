@@ -9,15 +9,29 @@ local armigerId = common.data.npcIds.armiger
 local grateAId = common.data.objectIds.grateA
 local grateBId = common.data.objectIds.grateB
 local ritualActivatorId = common.data.objectIds.ritualSiteActivator
+local evidenceActivatorId = common.data.objectIds.evidenceActivator
 
 local function updateJournalIndexValue(index)
     journalIndex = index or tes3.getJournalIndex({id = journalId}) 
 end
 
 local function onStageTwoSimulate(e)
+    local evidenceActivator = tes3.getReference(evidenceActivatorId)
+    if (tes3.player.position:distance(evidenceActivator.position) < 500) then
+        event.unregister("simulate", onStageTwoSimulate)
+
+        tes3.updateJournal({
+            id = journalId,
+            index = 30
+        })
+    end
+end
+
+local function onStageOnePostSimulate(e)
     local ritualActivator = tes3.getReference(ritualActivatorId)
     if (tes3.player.position:distance(ritualActivator.position) < 500) then
-        event.unregister("simulate", onStageTwoSimulate)
+        event.unregister("simulate", onStageOnePostSimulate)
+        event.register("simulate", onStageTwoSimulate)
 
         tes3.updateJournal({
             id = journalId,
@@ -59,8 +73,8 @@ local function onStageOneSimulate(e)
         })
     end
     
-    event.unregister("simulate", onStageTwoSimulate)
-    event.register("simulate", onStageTwoSimulate)
+    event.unregister("simulate", onStageOnePostSimulate)
+    event.register("simulate", onStageOnePostSimulate)
 end
 
 local function onStageTwoCellChanged(e)
@@ -108,19 +122,20 @@ local function processJournalIndexValue()
         common.debug("A Friend Mourned: Registered Activate Event.")
     elseif (journalIndex == 25) then
         -- Player has found the armiger is missing.
+        event.unregister("cellChanged", onStageOneCellChanged)
         event.unregister("activate", onActivate)
-        event.register("activate", onActivate)
         event.register("cellChanged", onStageTwoCellChanged)
+        event.register("activate", onActivate)
         common.debug("A Friend Mourned: Registered Activate Event.")
     elseif (journalIndex == 30) then
         -- Player has found evidence of a daedric cult.
-        event.unregister("cellChanged", onStageOneCellChanged)
         event.unregister("cellChanged", onStageTwoCellChanged)
         event.unregister("activate", onActivate)
         event.register("activate", onActivate)
         common.debug("A Friend Mourned: Registered Activate Event.")
     elseif (journalIndex == 40) then
         -- Player has found the enchanted barrier.
+        event.unregister("cellChanged", onStageTwoCellChanged)
         event.unregister("activate", onActivate)
         common.debug("A Friend Mourned: Registered Activate Event.")
     elseif (journalIndex == 60) then

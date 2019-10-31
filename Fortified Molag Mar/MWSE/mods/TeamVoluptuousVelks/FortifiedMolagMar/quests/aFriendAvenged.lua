@@ -254,11 +254,33 @@ local function onCellChanged(e)
     end
 end
 
+local function isBadGuy()
+    for journalId, index in pairs(common.data.bannedJournals) do
+        local currentIndex = tes3.getJournalIndex({id = journalId})
+        if (currentIndex >= index) then
+            return true
+        end
+    end
+    return false
+end
+
 local function onShrineActivate(e)
     local targetId = e.target.object.id
     if (common.data.playerData.shrines[targetId] ~= nil) then
         common.debug("A Friend Avenged: Target ID: " .. targetId)
         common.debug("A Friend Avenged: Shrine Activated.")
+
+        if (isBadGuy() == true) then
+            tes3.messageBox(common.data.messageBoxes.shrinesBadGuyDialogue)
+
+            tes3.updateJournal({
+                id = journalId,
+                index = 140
+            })
+
+            event.unregister("activate", onShrineActivate)
+            return
+        end
         
         if (tes3.player.data.fortifiedMolarMar.shrines[targetId] == true) then
             return
