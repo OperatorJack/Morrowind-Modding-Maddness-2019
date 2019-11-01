@@ -84,6 +84,7 @@ this.data = {
         firesOfOblivion = "FMM_FiresOfOblivionVFX",
         grateA = "FMM_grate_03a",
         grateB = "FMM_grate_03b",
+        grateC = "FMM_grate_04",
         exteriorGateNormal = "FMM_gate",
         exteriorGateBroken = "FMM_gate_broken",
         dremoraLordAshes = "FMM_D_AshPile"

@@ -23,7 +23,23 @@ local function onActivate(e)
     end
 end
 
+local onSimulateDoOnce = false
 local function onSimulate(e)
+    if (onSimulateDoOnce == false) then
+        local grateReference = tes3.getReference(common.data.objectIds.grateC)
+        if (grateReference) then
+            grateReference:disable()
+
+            timer.delayOneFrame({
+                callback = function()
+                    grateReference.deleted = true
+                end
+            })
+        end
+        
+        onSimulateDoOnce = true
+    end
+
     if (tes3.player.position:distance(armiger.position) < 500) then
         event.unregister("simulate", onSimulate)
         common.debug("A Friend Lost: Unregistering Simulate Event.")
