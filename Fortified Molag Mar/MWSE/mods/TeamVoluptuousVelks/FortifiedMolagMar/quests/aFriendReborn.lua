@@ -105,12 +105,12 @@ local function onBattleStageTwoSimulate(e)
         iterations = 1,
         duration = 15,
         callback = function()
-            local oldGate = tes3.getReference(common.data.objectIds.exteriorGateNormal)
+            local forcefield = tes3.getReference(common.data.objectIds.battlementForcefield)
             
             local spell = tes3.getObject(common.data.spellIds.gateExplosion)
             tes3.cast({
-                reference = oldGate,
-                target = oldGate,
+                reference = forcefield,
+                target = forcefield,
                 spell = spell
             })
 
@@ -118,26 +118,20 @@ local function onBattleStageTwoSimulate(e)
                 iterations = 1,
                 duration = 2,
                 callback = function()
-                    local newGate = tes3.createReference({
-                        object = common.data.objectIds.exteriorGateBroken,
-                        position = oldGate.position,
-                        orientation = oldGate.orientation,
-                        cell = oldGate.cell
-                    })
-        
+                    local dremoraLordReference = tes3.getReference(common.data.markerIds.battlements.dremoraLord2)
                     local dremoraLord = tes3.getReference(common.data.npcIds.dremoraLord)
                     tes3.positionCell({
                         reference = dremoraLord,
-                        position = newGate.position,
-                        orientation = newGate.orientation,
-                        cell = newGate.cell
+                        position = dremoraLordReference.position,
+                        orientation = dremoraLordReference.orientation,
+                        cell = dremoraLordReference.cell
                     })
         
-                    oldGate:disable()
+                    forcefield:disable()
         
                     timer.delayOneFrame({
                         callback = function()
-                            oldGate.deleted = true
+                            forcefield.deleted = true
                         end
                     })
              
@@ -172,6 +166,16 @@ local function onBattleStageOneSimulate(e)
     table.insert(cultists, spawnCultist(common.data.markerIds.battlements.cultist4))
     table.insert(cultists, spawnCultist(common.data.markerIds.battlements.cultist5))
     table.insert(cultists, spawnCultist(common.data.markerIds.battlements.cultist6))
+
+
+    local forcefieldReference = tes3.getReference(common.data.markerIds.battlements.forcefield)
+    tes3.createReference({
+        object = common.data.objectIds.battlementForcefield,
+        position = forcefieldReference.position,
+        orientation = forcefieldReference.orientation,
+        cell = tes3.player.cell,
+        scale = 2
+    })       
 
     local cultistLeaderReference = tes3.getReference(common.data.markerIds.battlements.cultistLeader)
     cultist = tes3.createReference({

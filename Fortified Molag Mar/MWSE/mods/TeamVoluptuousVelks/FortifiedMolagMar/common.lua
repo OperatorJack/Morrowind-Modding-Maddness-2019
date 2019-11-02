@@ -85,8 +85,7 @@ this.data = {
         grateA = "FMM_grate_03a",
         grateB = "FMM_grate_03b",
         grateC = "FMM_grate_04",
-        exteriorGateNormal = "FMM_gate",
-        exteriorGateBroken = "FMM_gate_broken",
+        battlementForcefield = "FMM_gate",
         dremoraLordAshes = "FMM_D_AshPile"
     },
     cellIds = {
@@ -141,11 +140,13 @@ this.data = {
             }
         },
         battlements = {
+            forcefield = "FMM_GateMarker",
             indaram = "FMM_fb_IndaramMarker",
             vivec = "FMM_fb_VivecMarker",
             cultistLeader = "FMM_fb_CultLeaderMarker",
             deadArmiger = "FMM_fb_SarisMarker",
             dremoraLord = "FMM_fb_DremoraMarker",
+            dremoraLord2 = "FMM_fb_Dremora2Marker",
 
             armiger1 = "FMM_fb_Armiger01Marker",
             armiger2 = "FMM_fb_Armiger02Marker",
