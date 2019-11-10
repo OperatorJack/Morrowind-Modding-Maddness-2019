@@ -41,10 +41,10 @@ require("TeamVoluptuousVelks.FortifiedMolagMar.events.registerSpells")
 
 -- Initilization Section --
 local function onInitialized()
-    --if not tes3.isModActive("Fortified Molag Mar.ESP") then
-    --    print("[Fortified Molag Mar: INFO] ESP not loaded")
-    --    return
-    --end
+    if not tes3.isModActive("Fortified Molag Mar.ESP") then
+        print("[Fortified Molag Mar: INFO] ESP not loaded")
+        return
+    end
 
     math.randomseed(os.time())
     math.random()

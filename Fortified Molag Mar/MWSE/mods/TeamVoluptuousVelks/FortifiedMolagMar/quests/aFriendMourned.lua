@@ -53,6 +53,38 @@ local function onStageOneSimulate(e)
             end
         })
     end
+    local swordBlade = tes3.getReference(common.data.objectIds.brokenSwordBlade)
+    if (swordBlade) then
+        local count = mwscript.getItemCount({
+            reference = tes3.player,
+            item = common.data.objectIds.brokenSwordBlade
+        })
+        if (count == 0) then
+            swordBlade:disable()
+            timer.delayOneFrame({
+                callback = function()
+                    common.debug("A Friend Mourned: Sword Blade Deleted.")
+                    swordBlade.deleted = true
+                end
+            })
+        end
+    end
+    local swordHilt = tes3.getReference(common.data.objectIds.brokenSwordHilt)
+    if (swordHilt) then
+        local count = mwscript.getItemCount({
+            reference = tes3.player,
+            item = common.data.objectIds.brokenSwordHilt
+        })
+        if (count == 0) then
+            swordHilt:disable()
+            timer.delayOneFrame({
+                callback = function()
+                    common.debug("A Friend Mourned: Sword Hilt Deleted.")
+                    swordHilt.deleted = true
+                end
+            })
+        end
+    end
 
     local grateA = tes3.getReference(grateAId)
     if (grateA) then

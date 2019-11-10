@@ -86,7 +86,9 @@ this.data = {
         grateB = "FMM_grate_03b",
         grateC = "FMM_grate_04",
         battlementForcefield = "FMM_gate",
-        dremoraLordAshes = "FMM_D_AshPile"
+        dremoraLordAshes = "FMM_D_AshPile",
+        brokenSwordBlade = "FMM_SwordBlade",
+        brokenSwordHilt = "FMM_SwordHilt"
     },
     cellIds = {
         underworks = "Molag Mar, Underworks",

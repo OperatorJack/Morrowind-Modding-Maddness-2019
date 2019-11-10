@@ -249,6 +249,30 @@ local function onCellChanged(e)
     end
 end
 
+local function onArmigersSimulate(e) 
+    event.unregister("simulate", onArmigersSimulate)
+    local mage = tes3.getReference(common.data.npcIds.mage)   
+    if (mage) then
+        mage:disable()
+        timer.delayOneFrame({
+            callback = function()
+                common.debug("A Friend Mourned: Armiger Deleted.")
+                mage.deleted = true
+            end
+        })
+    end
+end
+
+local function onCellChangedToArmigersStronghold(e)
+    if (e.cell.id == common.data.cellIds.armigersStronghold) then
+        event.register("simulate", onArmigersSimulate)
+        common.debug("A Friend Avenged: Registering Simulate Event.")
+    elseif (e.previousCell and e.previousCell.id == common.data.cellIds.armigersStronghold) then
+        event.unregister("simulate", onArmigersSimulate)
+        common.debug("A Friend Avenged: Unregistering Tunnel Simulate Event.")
+    end
+end
+
 local function isBadGuy()
     for journalId, index in pairs(common.data.bannedJournals) do
         local currentIndex = tes3.getJournalIndex({id = journalId})
@@ -261,6 +285,11 @@ end
 
 local function onShrineActivate(e)
     local targetId = e.target.object.id
+
+    if (targetId == "ac_shrine_gnisis_mv") then
+        targetId = "ac_shrine_gnisis"
+    end
+
     if (common.data.playerData.shrines[targetId] ~= nil) then
         common.debug("A Friend Avenged: Target ID: " .. targetId)
         common.debug("A Friend Avenged: Shrine Activated.")
@@ -335,9 +364,11 @@ local function processJournalIndexValue()
         event.register("cellChanged", onCellChanged)        
     elseif (journalIndex == 100) then
         -- Player has been given the artifact.  
-        event.unregister("cellChanged", onCellChanged)         
+        event.unregister("cellChanged", onCellChanged) 
+        event.register("cellChanged", onCellChangedToArmigersStronghold)        
     elseif (journalIndex == 120) then
         -- Player has reported the situation to Indaram.
+        event.unregister("cellChanged", onCellChangedToArmigersStronghold) 
         event.unregister("journal", onJournal)
         common.debug("A Friend Avenged: Unregistered Journal Event.")
     end
